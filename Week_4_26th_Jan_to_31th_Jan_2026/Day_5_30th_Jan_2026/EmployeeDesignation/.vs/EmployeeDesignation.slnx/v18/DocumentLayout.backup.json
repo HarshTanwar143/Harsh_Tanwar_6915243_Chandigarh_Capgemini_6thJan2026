@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_4_26th_Jan_to_31th_Jan_2026\\Day_5_30th_Jan_2026\\EmployeeDesignation\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4D7B7EA3-369B-E099-1401-AA4D1C97728C}|EmployeeDesignation.csproj|e:\\capegemini_cu_sec3_netcoreazure_harsh_tanwar\\week_4_26th_jan_to_31th_jan_2026\\day_5_30th_jan_2026\\employeedesignation\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D7B7EA3-369B-E099-1401-AA4D1C97728C}|EmployeeDesignation.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_4_26th_Jan_to_31th_Jan_2026\\Day_5_30th_Jan_2026\\EmployeeDesignation\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_4_26th_Jan_to_31th_Jan_2026\\Day_5_30th_Jan_2026\\EmployeeDesignation\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-30T05:43:25.04Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

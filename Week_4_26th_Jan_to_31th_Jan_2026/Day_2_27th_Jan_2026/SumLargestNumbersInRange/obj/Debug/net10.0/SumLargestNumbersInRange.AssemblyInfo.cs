@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SumLargestNumbersInRange")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+453bcc1d0ffb316522a8c0e8e3e761dc1aeb5742")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37870064e26dd550c5c8c83ff215899c920cbf3b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SumLargestNumbersInRange")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SumLargestNumbersInRange")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
