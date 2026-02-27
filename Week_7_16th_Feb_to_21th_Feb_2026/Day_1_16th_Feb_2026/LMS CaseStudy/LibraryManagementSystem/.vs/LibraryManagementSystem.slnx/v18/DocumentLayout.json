@@ -1,0 +1,70 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_7_16th_Feb_to_21th_Feb_2026\\Day_1_16th_Feb_2026\\LMS CaseStudy\\LibraryManagementSystem\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5C45F966-BF79-449E-BE28-2158C09BDA72}|..\\LMSTest\\LMSTest.csproj|e:\\capegemini_cu_sec3_netcoreazure_harsh_tanwar\\week_7_16th_feb_to_21th_feb_2026\\day_1_16th_feb_2026\\lms casestudy\\lmstest\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CDF0AAD5-97E6-4DFC-AD15-F1C0EEA5517E}|LibraryManagementSystem.csproj|e:\\capegemini_cu_sec3_netcoreazure_harsh_tanwar\\week_7_16th_feb_to_21th_feb_2026\\day_1_16th_feb_2026\\lms casestudy\\librarymanagementsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CDF0AAD5-97E6-4DFC-AD15-F1C0EEA5517E}|LibraryManagementSystem.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CDF0AAD5-97E6-4DFC-AD15-F1C0EEA5517E}|LibraryManagementSystem.csproj|e:\\capegemini_cu_sec3_netcoreazure_harsh_tanwar\\week_7_16th_feb_to_21th_feb_2026\\day_1_16th_feb_2026\\lms casestudy\\librarymanagementsystem\\library.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CDF0AAD5-97E6-4DFC-AD15-F1C0EEA5517E}|LibraryManagementSystem.csproj|solutionrelative:library.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UnitTest1.cs",
+              "DocumentMoniker": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_7_16th_Feb_to_21th_Feb_2026\\Day_1_16th_Feb_2026\\LMS CaseStudy\\LMSTest\\UnitTest1.cs",
+              "RelativeDocumentMoniker": "..\\LMSTest\\UnitTest1.cs",
+              "ToolTip": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_7_16th_Feb_to_21th_Feb_2026\\Day_1_16th_Feb_2026\\LMS CaseStudy\\LMSTest\\UnitTest1.cs",
+              "RelativeToolTip": "..\\LMSTest\\UnitTest1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-16T07:06:59.745Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Library.cs",
+              "DocumentMoniker": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_7_16th_Feb_to_21th_Feb_2026\\Day_1_16th_Feb_2026\\LMS CaseStudy\\LibraryManagementSystem\\Library.cs",
+              "RelativeDocumentMoniker": "Library.cs",
+              "ToolTip": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_7_16th_Feb_to_21th_Feb_2026\\Day_1_16th_Feb_2026\\LMS CaseStudy\\LibraryManagementSystem\\Library.cs",
+              "RelativeToolTip": "Library.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-16T07:03:54.849Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_7_16th_Feb_to_21th_Feb_2026\\Day_1_16th_Feb_2026\\LMS CaseStudy\\LibraryManagementSystem\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_7_16th_Feb_to_21th_Feb_2026\\Day_1_16th_Feb_2026\\LMS CaseStudy\\LibraryManagementSystem\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-16T07:02:57.023Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
