@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_8_23th_Feb_to_28th_Feb_2026\\Day_1_23th_Feb_2026\\What_is_an_Age\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{57D4A6A2-D00E-4FA6-AB6E-E00C0C7C26E5}|What_is_an_Age.csproj|e:\\capegemini_cu_sec3_netcoreazure_harsh_tanwar\\week_8_23th_feb_to_28th_feb_2026\\day_1_23th_feb_2026\\what_is_an_age\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{57D4A6A2-D00E-4FA6-AB6E-E00C0C7C26E5}|What_is_an_Age.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_8_23th_Feb_to_28th_Feb_2026\\Day_1_23th_Feb_2026\\What_is_an_Age\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_8_23th_Feb_to_28th_Feb_2026\\Day_1_23th_Feb_2026\\What_is_an_Age\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-27T20:17:29.348Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
