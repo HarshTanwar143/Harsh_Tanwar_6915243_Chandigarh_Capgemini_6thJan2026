@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_9_2th_Mar_to_7th_Mar_2026\\Day_2_3rd_Mar_2026\\M1 Practice Questions\\UserInheritance\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A927C1D6-3254-47D5-B44D-D4A0587213A2}|UserInheritance.csproj|e:\\capegemini_cu_sec3_netcoreazure_harsh_tanwar\\week_9_2th_mar_to_7th_mar_2026\\day_2_3rd_mar_2026\\m1 practice questions\\userinheritance\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A927C1D6-3254-47D5-B44D-D4A0587213A2}|UserInheritance.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_9_2th_Mar_to_7th_Mar_2026\\Day_2_3rd_Mar_2026\\M1 Practice Questions\\UserInheritance\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "E:\\Capegemini_CU_Sec3_NetCoreAzure_Harsh_Tanwar\\Week_9_2th_Mar_to_7th_Mar_2026\\Day_2_3rd_Mar_2026\\M1 Practice Questions\\UserInheritance\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-05T06:01:10.202Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
