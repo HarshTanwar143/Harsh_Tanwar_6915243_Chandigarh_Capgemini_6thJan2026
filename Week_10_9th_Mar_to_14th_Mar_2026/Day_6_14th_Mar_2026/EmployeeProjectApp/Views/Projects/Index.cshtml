@@ -1,0 +1,46 @@
+﻿@model IEnumerable<EmployeeProjectApp.Models.Project>
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<h2 class="mb-4">Projects</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">+ Add Project</a>
+<a asp-action="Dashboard" class="btn btn-success mb-3">Dashboard</a>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Assigned Employees</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var proj in Model)
+        {
+            <tr>
+                <td>@proj.Title</td>
+                <td>@proj.Description</td>
+                <td>
+                    @if (proj.EmployeeProjects.Any())
+                    {
+                        @string.Join(", ", proj.EmployeeProjects.Select(ep => ep.Employee.Name))
+                    }
+                    else
+                    {
+
+                        <span class="text-muted">None</span>
+                    }
+                </td>
+                <td>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-action="Details" asp-route-id="@proj.Id" class="btn btn-sm btn-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@proj.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@proj.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

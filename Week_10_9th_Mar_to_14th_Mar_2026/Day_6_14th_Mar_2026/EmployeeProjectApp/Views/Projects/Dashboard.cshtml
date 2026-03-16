@@ -1,0 +1,62 @@
+﻿@model IEnumerable<EmployeeProjectApp.Models.Project>
+@{
+    ViewData["Title"] = "Project Dashboard";
+}
+
+<h2 class="mb-4"> Project Dashboard</h2>
+
+@* Employees per Department Summary *@
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white"><strong>Employees Per Department</strong></div>
+    <div class="card-body">
+        <table class="table table-sm table-bordered">
+            <thead><tr><th>Department</th><th>Employee Count</th></tr></thead>
+            <tbody>
+                @foreach (var item in ViewBag.EmployeesPerDepartment)
+                {
+                    <tr>
+                        <td>@item.DepartmentName</td>
+                        <td><span class="badge bg-primary">@item.Count</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* Project Details with Employees and Departments *@
+@foreach (var project in Model)
+{
+    <div class="card mb-3">
+        <div class="card-header bg-success text-white">
+            <strong>@project.Title</strong>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">@project.Description</p>
+            @if (project.EmployeeProjects.Any())
+            {
+                <table class="table table-sm table-bordered">
+                    <thead class="table-light">
+                        <tr><th>Employee</th><th>Department</th><th>Assigned Date</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ep in project.EmployeeProjects)
+                        {
+                            <tr>
+                                <td>@ep.Employee.Name</td>
+                                <td>@ep.Employee.Department?.Name</td>
+                                <td>@ep.AssignedDate.ToShortDateString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted">No employees assigned.</p>
+            }
+        </div>
+    </div>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back to Projects</a>
