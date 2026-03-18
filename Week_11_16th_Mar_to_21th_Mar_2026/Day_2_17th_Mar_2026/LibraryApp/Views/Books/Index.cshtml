@@ -1,0 +1,113 @@
+﻿@model List<LibraryApp.Models.BookViewModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library - Books</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+        body { min-height:100vh; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); padding:40px 20px; }
+
+        .top-bar {
+            background:white; border-radius:15px; padding:20px 30px;
+            margin-bottom:25px; display:flex; justify-content:space-between;
+            align-items:center; box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .welcome { color:#667eea; font-size:16px; font-weight:600; }
+        .count-badge { background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:6px 16px; border-radius:20px; font-size:14px; font-weight:700; }
+
+        .card { background:white; border-radius:20px; padding:40px; max-width:800px; margin:0 auto; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+
+        .card-header { text-align:center; margin-bottom:30px; }
+        .icon { width:70px; height:70px; background:linear-gradient(135deg,#667eea,#764ba2); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 15px; font-size:30px; }
+        .card-header h2 { color:#2d3748; font-size:26px; font-weight:700; }
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+                <text>
+                .success-banner { background:#f0fff4; border:1px solid #9ae6b4; border-radius:10px; padding:12px 16px; color:#276749; font-weight:600; margin-bottom:20px; }
+                </text>
+        }
+
+        table { width:100%; border-collapse:collapse; margin-bottom:25px; }
+        thead tr { background:linear-gradient(135deg,#667eea,#764ba2); color:white; }
+        thead th { padding:14px 16px; text-align:left; font-size:13px; }
+        thead th:first-child { border-radius:10px 0 0 10px; }
+        thead th:last-child { border-radius:0 10px 10px 0; }
+        tbody tr { border-bottom:1px solid #e2e8f0; transition:background 0.2s; }
+        tbody tr:hover { background:#f7fafc; }
+        tbody td { padding:12px 16px; color:#4a5568; font-size:13px; }
+
+        .badge-id { background:linear-gradient(135deg,#667eea,#764ba2); color:white; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:700; }
+        .genre-badge { background:#ebf4ff; color:#3182ce; padding:3px 10px; border-radius:20px; font-size:12px; }
+        .available { color:#276749; font-weight:700; }
+        .unavailable { color:#c53030; font-weight:700; }
+
+        .btn-add { display:inline-block; padding:12px 25px; background:linear-gradient(135deg,#667eea,#764ba2); color:white; border-radius:10px; text-decoration:none; font-weight:600; font-size:14px; transition:all 0.3s; }
+        .btn-add:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(102,126,234,0.5); }
+    </style>
+</head>
+<body>
+
+
+    <div class="top-bar" style="max-width:800px; margin:0 auto 25px;">
+        <span class="welcome">💬 @ViewBag.WelcomeMessage</span>
+        <span class="count-badge">📚 Total Books: @ViewData["TotalBooks"]</span>
+    </div>
+
+    <div class="card" style="max-width:800px; margin:0 auto;">
+        <div class="card-header">
+            <div class="icon">📚</div>
+            <h2>Library Books</h2>
+        </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div style="background:#f0fff4; border:1px solid #9ae6b4; border-radius:10px; padding:12px 16px; color:#276749; font-weight:600; margin-bottom:20px;">
+                ✅ @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Year</th>
+                    <th>Genre</th>
+                    <th>Available</th>
+                    <th>Borrower</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vm in Model)
+                {
+                    <tr>
+                        <td><span class="badge-id">@vm.Book.Id</span></td>
+                        <td><strong>@vm.Book.Title</strong></td>
+                        <td>@vm.Book.Author</td>
+                        <td>@vm.Book.PublishedYear</td>
+                        <td><span class="genre-badge">@vm.Book.Genre</span></td>
+                        <td>
+                            @if (vm.IsAvailable)
+                            {
+                                <span class="available">✅ Yes</span>
+                            }
+                            else
+                            {
+                                <span class="unavailable">❌ No</span>
+                            }
+                        </td>
+                        <td>@vm.BorrowerName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <a href="/Books/Create" class="btn-add">➕ Add New Book</a>
+    </div>
+
+</body>
+</html>
