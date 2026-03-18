@@ -1,0 +1,187 @@
+﻿@model StudentManagementSystem.Models.Student
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI',sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 460px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 30px;
+        }
+
+        .card-header h2 {
+            color: #2d3748;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .card-header p {
+            color: #718096;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                color: #4a5568;
+                font-weight: 600;
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #a0aec0;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+            .form-group input:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102,126,234,0.15);
+            }
+
+        .field-error {
+            color: #e53e3e;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+            .btn-register:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102,126,234,0.5);
+            }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #667eea;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <div class="icon">🎓</div>
+            <h2>Student Registration</h2>
+            <p>Fill in the details below</p>
+        </div>
+
+        <form asp-action="Register" method="post">
+            <div class="form-group">
+                <label asp-for="Name">Full Name <span style="color:red">*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input asp-for="Name" placeholder="Enter full name" />
+                </div>
+                <div class="field-error"><span asp-validation-for="Name"></span></div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Age">Age <span style="color:red">*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🎂</span>
+                    <input asp-for="Age" type="number" placeholder="Enter age (18-60)" />
+                </div>
+                <div class="field-error"><span asp-validation-for="Age"></span></div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">Email <span style="color:red">*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon">📧</span>
+                    <input asp-for="Email" type="email" placeholder="Enter email address" />
+                </div>
+                <div class="field-error"><span asp-validation-for="Email"></span></div>
+            </div>
+
+            <div class="divider"></div>
+            <button type="submit" class="btn-register">✅ Register Student</button>
+            <a href="/Account/Dashboard" class="btn-back">← Back to Dashboard</a>
+        </form>
+    </div>
+    @section Scripts {
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
+</body>
+</html>

@@ -1,0 +1,206 @@
+﻿@model StudentApp.Models.Student
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .card-header .icon {
+                width: 70px;
+                height: 70px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 15px;
+                font-size: 30px;
+            }
+
+            .card-header h2 {
+                color: #2d3748;
+                font-size: 26px;
+                font-weight: 700;
+            }
+
+            .card-header p {
+                color: #718096;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                color: #4a5568;
+                font-weight: 600;
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+
+                .form-group label span {
+                    color: #e53e3e;
+                }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+            .input-wrapper .input-icon {
+                position: absolute;
+                left: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 18px;
+                color: #a0aec0;
+            }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #2d3748;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+            .form-group input:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102,126,234,0.15);
+            }
+
+        .field-error {
+            color: #e53e3e;
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+            .btn-register:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102,126,234,0.5);
+            }
+
+            .btn-register:active {
+                transform: translateY(0);
+            }
+
+        .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 25px 0;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #a0aec0;
+            font-size: 13px;
+        }
+
+        input.input-error {
+            border-color: #e53e3e;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="icon">🎓</div>
+            <h2>Student Registration</h2>
+            <p>Fill in the details below to register</p>
+        </div>
+
+        <form asp-action="Register" method="post">
+            <div class="form-group">
+                <label asp-for="Name">Full Name <span>*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input asp-for="Name" placeholder="Enter your full name"
+                           class="@(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "input-error" : "")" />
+                </div>
+                <div class="field-error">
+                    <span asp-validation-for="Name"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Age">Age <span>*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🎂</span>
+                    <input asp-for="Age" type="number" placeholder="Enter your age (18–60)"
+                           class="@(ViewData.ModelState["Age"]?.Errors.Count > 0 ? "input-error" : "")" />
+                </div>
+                <div class="field-error">
+                    <span asp-validation-for="Age"></span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <button type="submit" class="btn-register">
+                ✅ Register Student
+            </button>
+
+            <p class="footer-note" style="margin-top:16px;">
+                Age must be between 18 and 60
+            </p>
+        </form>
+    </div>
+
+    @section Scripts {
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
+
+</body>
+</html>
