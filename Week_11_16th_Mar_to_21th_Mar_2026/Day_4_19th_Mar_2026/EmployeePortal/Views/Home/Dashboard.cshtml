@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+    .dash-eyebrow {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 6px;
+    }
+
+    .dash-title {
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 4px;
+        color: var(--text);
+    }
+
+    .dash-subtitle {
+        font-size: 14px;
+        color: var(--muted);
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* KPI CARDS */
+    .kpi-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 40px;
+    }
+
+    .kpi-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 28px 28px 24px;
+        position: relative;
+        overflow: hidden;
+        transition: border-color .2s, transform .2s;
+    }
+
+        .kpi-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 0 0 12px 12px;
+            background: var(--kpi-color, var(--accent));
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .kpi-card:hover::after {
+            opacity: 1;
+        }
+
+        .kpi-card.blue {
+            --kpi-color: var(--blue);
+        }
+
+        .kpi-card.green {
+            --kpi-color: var(--accent);
+        }
+
+        .kpi-card.dark {
+            --kpi-color: #7d8590;
+        }
+
+    .kpi-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 14px;
+    }
+
+    .kpi-value {
+        font-size: 44px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.03em;
+    }
+
+    .kpi-card.blue .kpi-value {
+        color: var(--blue);
+    }
+
+    .kpi-card.green .kpi-value {
+        color: var(--accent);
+    }
+
+    .kpi-card.dark .kpi-value {
+        font-size: 15px;
+        color: var(--text);
+        word-break: break-all;
+        line-height: 1.5;
+        margin-top: 4px;
+    }
+
+    @@media (max-width: 768px) {
+        .kpi-row {
+            grid-template-columns: 1fr;
+        }
+
+        .dash-title {
+            font-size: 28px;
+        }
+    }
+</style>
+
+<div>
+    <div class="dash-eyebrow">Overview</div>
+    <div class="dash-title">Dashboard</div>
+    <div class="dash-subtitle">
+        Welcome back, <strong style="color:var(--text)">@User.Identity.Name</strong> 👋
+    </div>
+
+    <div class="kpi-row">
+        <div class="kpi-card blue">
+            <div class="kpi-label">Total Employees</div>
+            <div class="kpi-value">@ViewBag.TotalEmployees</div>
+        </div>
+        <div class="kpi-card green">
+            <div class="kpi-label">Total Departments</div>
+            <div class="kpi-value">@ViewBag.TotalDepartments</div>
+        </div>
+        <div class="kpi-card dark">
+            <div class="kpi-label">Logged in as</div>
+            <div class="kpi-value">@User.Identity.Name</div>
+        </div>
+    </div>
+</div>
