@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Weather MVC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a class="nav-brand" href="/">
+                ⛅ <span>WeatherMVC</span>
+            </a>
+            <div class="nav-links">
+                <a href="/">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <p>WeatherMvcApp &mdash; Consuming <code>WeatherApiDemo</code> Web API &bull; ASP.NET Core MVC</p>
+    </footer>
+
+</body>
+</html>
