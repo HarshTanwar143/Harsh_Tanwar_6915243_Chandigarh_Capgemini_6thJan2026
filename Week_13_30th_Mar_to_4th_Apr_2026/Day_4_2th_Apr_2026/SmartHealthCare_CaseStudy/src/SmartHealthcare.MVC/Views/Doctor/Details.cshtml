@@ -1,0 +1,436 @@
+@model SmartHealthcare.Models.DTOs.DoctorDTO
+@{
+    ViewData["Title"] = "Doctor Profile";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <a href="@Url.Action("Index")" class="btn btn-outline-secondary mb-3"><i class="bi bi-arrow-left"></i> Back to Doctors</a>
+            
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-primary text-white p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h1 class="mb-1"><i class="bi bi-person-circle"></i> Dr. @Model.FullName</h1>
+                            <p class="mb-0 text-light">@string.Join(" | ", Model.Specializations ?? new List<string>())</p>
+                        </div>
+                        <span class="badge bg-@(Model.IsAvailable ? "success" : "danger") fs-5">
+                            @(Model.IsAvailable ? "✓ Available" : "✗ Unavailable")
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Contact Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="card-title mb-3"><i class="bi bi-info-circle-fill text-primary"></i> Contact Information</h5>
+                            <div class="contact-info">
+                                <p class="mb-3">
+                                    <strong><i class="bi bi-envelope"></i> Email:</strong><br />
+                                    <a href="mailto:@Model.Email">@Model.Email</a>
+                                </p>
+                                <p class="mb-3">
+                                    <strong><i class="bi bi-telephone"></i> Phone:</strong><br />
+                                    <a href="tel:@Model.Phone">@Model.Phone</a>
+                                </p>
+                                <p class="mb-3">
+                                    <strong><i class="bi bi-credit-card"></i> License Number:</strong><br />
+                                    <span class="badge bg-light text-dark">@Model.LicenseNumber</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="card-title mb-3"><i class="bi bi-briefcase-fill text-success"></i> Professional Details</h5>
+                            <div class="professional-info">
+                                <p class="mb-3">
+                                    <strong><i class="bi bi-clock-history"></i> Years of Experience:</strong><br />
+                                    <span class="fs-5 text-success">@Model.YearsOfExperience years</span>
+                                </p>
+                                <p class="mb-3">
+                                    <strong><i class="bi bi-cash-coin"></i> Consultation Fee:</strong><br />
+                                    <span class="fs-5 text-danger">Rs. @Model.ConsultationFee</span>
+                                </p>
+                                <p class="mb-0">
+                                    <strong><i class="bi bi-hospital"></i> Specializations:</strong><br />
+                                    <div class="mt-2">
+                                        @foreach (var spec in (Model.Specializations ?? new List<string>()))
+                                        {
+                                            <span class="badge bg-info me-2 mb-2">@spec</span>
+                                        }
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- About Section -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5 class="card-title mb-3"><i class="bi bi-file-text-fill text-info"></i> About Dr. @Model.FullName</h5>
+                            <p class="text-muted">
+                                Dr. @Model.FullName is a highly qualified medical professional with @Model.YearsOfExperience years of experience 
+                                in @(Model.Specializations?.Count > 0 ? string.Join(", ", Model.Specializations) : "various medical fields"). 
+                                The doctor is dedicated to providing excellent patient care and maintaining the highest standards of medical practice.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light p-4">
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        @if (Context.Session.GetString("Role") == "Doctor")
+                        {
+                            <a asp-controller="Doctor" asp-action="Edit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-pencil-square"></i> Edit Profile
+                            </a>
+                        }
+
+                        @if (Model.IsAvailable)
+                        {
+                            <a asp-controller="Appointment" asp-action="Create" class="btn btn-success btn-lg">
+                                <i class="bi bi-calendar-check"></i> Book Appointment
+                            </a>
+                        }
+                        <a href="@Url.Action("Index")" class="btn btn-outline-secondary btn-lg">
+                            <i class="bi bi-arrow-left"></i> Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-outline-secondary {
+        border-radius: 2rem;
+        border: 2px solid #6c757d;
+        color: #6c757d;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-outline-secondary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(108, 117, 125, 0.1), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-outline-secondary:hover::before {
+        left: 100%;
+    }
+
+    .btn-outline-secondary:hover {
+        background: linear-gradient(135deg, #6c757d, #545b62);
+        border-color: #6c757d;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+    }
+
+    .card {
+        border: none;
+        border-radius: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.95);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        animation: cardSlideIn 0.8s ease-out;
+    }
+
+    @@keyframes cardSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #0d6efd, #6610f2);
+        color: white;
+        border: none;
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .card-header .d-flex {
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-header h1 {
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 0.25rem;
+    }
+
+    .card-header p {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        opacity: 0.9;
+    }
+
+    .badge {
+        border-radius: 2rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .badge.bg-success {
+        background: linear-gradient(135deg, #198754, #155724) !important;
+    }
+
+    .badge.bg-danger {
+        background: linear-gradient(135deg, #dc3545, #c82333) !important;
+    }
+
+    .card-body {
+        padding: 2.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-title {
+        color: #2d3748;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+    }
+
+    .card-title::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--title-color), var(--title-color-dark));
+        border-radius: 2px;
+    }
+
+    .contact-info, .professional-info {
+        background: linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.8));
+        padding: 2rem;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .contact-info:hover, .professional-info:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-info p, .professional-info p {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .contact-info strong, .professional-info strong {
+        color: #4a5568;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .contact-info a {
+        color: #0d6efd;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .contact-info a:hover {
+        color: #6610f2;
+        text-decoration: underline;
+    }
+
+    .fs-5 {
+        font-size: 1.25rem !important;
+        font-weight: 700;
+    }
+
+    .text-success {
+        color: #198754 !important;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    .badge.bg-light {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+        color: #495057 !important;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .badge.bg-info {
+        background: linear-gradient(135deg, #0dcaf0, #0aa2c0) !important;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1));
+        margin: 2rem 0;
+    }
+
+    .text-muted {
+        color: #718096 !important;
+        line-height: 1.7;
+        font-size: 1.05rem;
+    }
+
+    .card-footer {
+        background: linear-gradient(135deg, rgba(248, 250, 252, 0.9), rgba(241, 245, 249, 0.9));
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+    }
+
+    .btn {
+        border-radius: 2rem;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #198754, #155724);
+        border: none;
+        box-shadow: 0 8px 20px rgba(25, 135, 84, 0.3);
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #155724, #0f5132);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(25, 135, 84, 0.4);
+    }
+
+    .btn-outline-secondary {
+        border: 2px solid #6c757d;
+        color: #6c757d;
+    }
+
+    .btn-outline-secondary:hover {
+        background: linear-gradient(135deg, #6c757d, #545b62);
+        border-color: #6c757d;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+    }
+
+    /* Title colors */
+    .text-primary { --title-color: #0d6efd; --title-color-dark: #6610f2; }
+    .text-success { --title-color: #198754; --title-color-dark: #155724; }
+    .text-info { --title-color: #0dcaf0; --title-color-dark: #0aa2c0; }
+
+    /* Icon enhancements */
+    .bi {
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+        transition: all 0.3s ease;
+    }
+
+    .bi:hover {
+        transform: scale(1.1);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .card-body, .card-header {
+            padding: 2rem 1.5rem;
+        }
+
+        .contact-info, .professional-info {
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .row .col-md-6 {
+            margin-bottom: 1.5rem;
+        }
+
+        .card-footer {
+            padding: 1.5rem;
+        }
+
+        .d-sm-flex {
+            flex-direction: column;
+        }
+
+        .btn {
+            margin-bottom: 0.5rem;
+        }
+    }
+</style>

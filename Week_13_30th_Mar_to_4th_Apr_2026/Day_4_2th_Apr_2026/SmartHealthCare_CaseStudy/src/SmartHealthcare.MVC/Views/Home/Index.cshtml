@@ -1,0 +1,394 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    var token = Context.Session.GetString("Token");
+}
+
+<section class="hero-panel mb-5">
+    <div class="hero-copy">
+        <span class="eyebrow"><i class="bi bi-shield-check"></i> Connected Care Platform</span>
+        <h1>Smart Healthcare Management System</h1>
+        <p class="lead">Your complete solution for managing patients, doctors, appointments, prescriptions, and care workflows from one intelligent dashboard.</p>
+        <div class="hero-actions">
+            @if (token == null)
+            {
+                <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg">
+                    <i class="bi bi-person-plus"></i> Get Started
+                </a>
+                <a asp-controller="Doctor" asp-action="Index" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-search"></i> Browse Doctors
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-light btn-lg">
+                    <i class="bi bi-speedometer2"></i> Go to Dashboard
+                </a>
+                <a asp-controller="Appointment" asp-action="Create" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-calendar-check"></i> Book Appointment
+                </a>
+            }
+        </div>
+    </div>
+    <div class="hero-stats">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-clock-fill"></i></div>
+            <div>
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Service Access</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-lightning-fill"></i></div>
+            <div>
+                <div class="stat-value">Fast</div>
+                <div class="stat-label">Appointment Booking</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="bi bi-shield-lock-fill"></i></div>
+            <div>
+                <div class="stat-value">Secure</div>
+                <div class="stat-label">Data Protection</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="feature-grid">
+    <article class="feature-card">
+        <div class="feature-icon bg-primary"><i class="bi bi-person-lines-fill"></i></div>
+        <h3><i class="bi bi-people"></i> For Patients</h3>
+        <p>Book appointments with qualified doctors, review your care history, manage your medical profile, and receive digital prescriptions.</p>
+        <a href="@Url.Action("Index", "Doctor")" class="btn btn-sm btn-outline-primary mt-3">Learn More</a>
+    </article>
+    
+    <article class="feature-card">
+        <div class="feature-icon bg-success"><i class="bi bi-stethoscope"></i></div>
+        <h3><i class="bi bi-hospital"></i> For Doctors</h3>
+        <p>Manage your patient schedule, track visits efficiently, issue prescriptions, and build your professional profile online.</p>
+        <a href="@Url.Action("Register", "Account")" class="btn btn-sm btn-outline-success mt-3">Register Now</a>
+    </article>
+    
+    <article class="feature-card">
+        <div class="feature-icon bg-info"><i class="bi bi-graph-up"></i></div>
+        <h3><i class="bi bi-speedometer2"></i> For Administrators</h3>
+        <p>Monitor system performance, manage users, generate health reports, and ensure smooth operations of the entire healthcare network.</p>
+        <a href="@Url.Action("Login", "Account")" class="btn btn-sm btn-outline-info mt-3">Admin Login</a>
+    </article>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="mt-5 pt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="mb-4">Why Choose Smart Healthcare?</h2>
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Easy Appointment Booking</strong>
+                    <p class="ms-4 text-muted">Book appointments in seconds with our intuitive scheduling system</p>
+                </li>
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Qualified Healthcare Professionals</strong>
+                    <p class="ms-4 text-muted">Access to verified and experienced doctors across multiple specializations</p>
+                </li>
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Digital Prescriptions</strong>
+                    <p class="ms-4 text-muted">Receive and manage prescriptions digitally from anywhere</p>
+                </li>
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Secure & Private</strong>
+                    <p class="ms-4 text-muted">Your medical data is encrypted and protected with industry-standard security</p>
+                </li>
+                <li class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <strong class="ms-2">Available 24/7</strong>
+                    <p class="ms-4 text-muted">Access our platform anytime, anywhere on any device</p>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg bg-light">
+                <div class="card-body p-5 text-center">
+                    <h3 class="mb-4"><i class="bi bi-heart-pulse-fill text-danger fs-1"></i></h3>
+                    <h4 class="mb-3\">Your Health, Our Priority</h4>
+                    <p class="text-muted mb-4\">We're committed to providing accessible, affordable, and quality healthcare services to everyone.</p>
+                    @if (token == null)
+                    {
+                        <a href="@Url.Action("Register", "Account")" class="btn btn-primary btn-lg">Start Your Journey</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .hero-panel {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2rem;
+        padding: 4rem 3rem;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        animation: heroSlideIn 1s ease-out;
+    }
+
+    .hero-panel::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+
+    @@keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @@keyframes heroSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .eyebrow {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-copy h1 {
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: none;
+    }
+
+    .hero-actions .btn {
+        border-radius: 3rem;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-actions .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .hero-actions .btn:hover::before {
+        left: 100%;
+    }
+
+    .hero-actions .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .stat-icon {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-top: 4rem;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 1.5rem;
+        padding: 2.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        animation: cardFadeIn 0.8s ease-out;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .feature-card:nth-child(1)::before { background: linear-gradient(90deg, #0d6efd, #6610f2); }
+    .feature-card:nth-child(2)::before { background: linear-gradient(90deg, #198754, #20c997); }
+    .feature-card:nth-child(3)::before { background: linear-gradient(90deg, #0dcaf0, #6f42c1); }
+
+    @@keyframes cardFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .feature-card:nth-child(1) { animation-delay: 0.2s; }
+    .feature-card:nth-child(2) { animation-delay: 0.4s; }
+    .feature-card:nth-child(3) { animation-delay: 0.6s; }
+
+    .feature-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-icon {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 1.25rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .feature-icon:hover {
+        transform: rotate(5deg) scale(1.1);
+    }
+
+    .feature-card h3 {
+        color: #2d3748;
+        font-weight: 700;
+        margin: 1.5rem 0 1rem;
+    }
+
+    .feature-card p {
+        color: #4a5568;
+        line-height: 1.6;
+    }
+
+    .feature-card .btn {
+        border-radius: 2rem;
+        padding: 0.5rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s;
+    }
+
+    .feature-card .btn:hover::before {
+        left: 100%;
+    }
+
+    .feature-card .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Why Choose Us Section */
+    section.mt-5 {
+        background: linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.8));
+        border-radius: 2rem;
+        padding: 4rem 2rem;
+        margin-top: 4rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .list-unstyled li {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #0d6efd;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .list-unstyled li:hover {
+        transform: translateX(10px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .card.border-0.shadow-lg {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .hero-panel {
+            padding: 2rem 1.5rem;
+            border-radius: 1.5rem;
+        }
+
+        .feature-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+        }
+
+        section.mt-5 {
+            padding: 2rem 1rem;
+            margin-top: 2rem;
+        }
+    }
+</style>
+    <article class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3>Admin</h3>
+        <p>Oversee users, monitor activity, and keep operations organized at a glance.</p>
+    </article>
+</section>
+</div>
