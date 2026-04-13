@@ -1,0 +1,11 @@
+﻿@model SmartRetailMVC.Models.Product
+<h2>Edit Product</h2>
+<form asp-action="Edit" method="post">
+    <input asp-for="Id" type="hidden" />
+    <label>Name:</label>
+    <input asp-for="Name" /><br />
+    <label>Price:</label>
+    <input asp-for="Price" /><br />
+    <button type="submit">Save</button>
+</form>
+<a asp-action="Index">Back to List</a>
