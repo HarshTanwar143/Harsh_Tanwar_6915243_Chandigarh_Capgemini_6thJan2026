@@ -1,0 +1,14 @@
+@model SalesReportView
+@{ ViewData["Title"] = "Sales Report"; }
+<h2>Sales Report</h2>
+<div class="row mt-4">
+    <div class="col-md-4"><div class="card border-primary mb-3"><div class="card-body"><h5>Total Orders</h5><h2 class="text-primary">@Model.TotalOrders</h2></div></div></div>
+    <div class="col-md-4"><div class="card border-success mb-3"><div class="card-body"><h5>Total Revenue</h5><h2 class="text-success">Rs. @Model.TotalRevenue</h2></div></div></div>
+</div>
+<h4 class="mt-4">Top Selling Books</h4>
+@if (Model.TopBooks.Any())
+{
+    <table class="table"><thead><tr><th>Title</th><th>Total Sold</th><th>Revenue</th></tr></thead>
+    <tbody>@foreach (var b in Model.TopBooks) { <tr><td>@b.Title</td><td>@b.TotalSold</td><td>Rs. @b.Revenue</td></tr> }</tbody></table>
+}
+else { <p>No sales data available yet.</p> }
