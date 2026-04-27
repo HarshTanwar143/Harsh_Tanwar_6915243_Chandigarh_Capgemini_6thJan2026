@@ -1,0 +1,190 @@
+@page
+@model EventBookingWeb.Pages.Events.EventsIndexModel
+@{
+    ViewData["Title"] = "Available Events";
+}
+
+<input type="hidden" id="apiBase" value="@Model.ApiBase" />
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2 text-primary"></i>Available Events</h3>
+    <span class="badge bg-secondary fs-6" id="eventCount">Loading...</span>
+</div>
+
+<div id="alertBox" class="alert d-none" role="alert"></div>
+<div id="loadingSpinner" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted mt-2">Fetching events...</p>
+</div>
+
+<div id="eventsGrid" class="row g-4"></div>
+<div id="noEvents" class="text-center py-5 d-none">
+    <i class="bi bi-calendar-x display-3 text-muted"></i>
+    <p class="text-muted mt-3 fs-5">No upcoming events at the moment.</p>
+</div>
+
+<div class="modal fade" id="bookModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="bookModalTitle">Book Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="bookAlert" class="alert d-none" role="alert"></div>
+                <p class="text-muted" id="bookModalDesc"></p>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Number of Seats</label>
+                    <input type="number" id="seatsInput" class="form-control" min="1" max="50" value="1" />
+                    <div class="form-text" id="seatsAvailableText"></div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary fw-semibold" onclick="confirmBooking()">
+                    <i class="bi bi-check2-circle me-1"></i>Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const API = document.getElementById('apiBase').value;
+    let selectedEventId = null;
+    let selectedMaxSeats = 0;
+
+    function escHtml(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    async function loadEvents() {
+        try {
+            const res = await fetch(API + '/api/events');
+            const events = await res.json();
+
+            document.getElementById('loadingSpinner').style.display = 'none';
+
+            if (!events || events.length === 0) {
+                document.getElementById('noEvents').classList.remove('d-none');
+                document.getElementById('eventCount').textContent = '0 events';
+                return;
+            }
+
+            document.getElementById('eventCount').textContent = events.length + ' event' + (events.length !== 1 ? 's' : '');
+
+            const token = localStorage.getItem('token');
+            let myBookedEventIds = [];
+
+            if (token) {
+                try {
+                    const bRes = await fetch(API + '/api/bookings/my', {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    if (bRes.ok) {
+                        const bookings = await bRes.json();
+                        myBookedEventIds = bookings.map(function(b) { return b.eventId; });
+                    }
+                } catch (e) {}
+            }
+
+            const grid = document.getElementById('eventsGrid');
+            grid.innerHTML = '';
+
+            events.forEach(function(evt) {
+                const date = new Date(evt.date);
+                const isBooked = myBookedEventIds.indexOf(evt.id) >= 0;
+                const isPast = date < new Date();
+                const noSeats = evt.availableSeats <= 0;
+
+                let btnHtml = '';
+                if (!token) {
+                    btnHtml = '<a href="/Auth/Login" class="btn btn-outline-primary btn-sm mt-2 w-100"><i class="bi bi-box-arrow-in-right me-1"></i>Login to Book</a>';
+                } else if (isBooked) {
+                    btnHtml = '<button class="btn btn-success btn-sm mt-2 w-100" disabled><i class="bi bi-check-circle-fill me-1"></i>You are Registered</button>';
+                } else if (isPast || noSeats) {
+                    btnHtml = '<button class="btn btn-secondary btn-sm mt-2 w-100" disabled>' + (noSeats ? 'Sold Out' : 'Event Passed') + '</button>';
+                } else {
+                    btnHtml = '<button class="btn btn-primary btn-sm mt-2 w-100" onclick="openBookModal(' + evt.id + ', \'' + escHtml(evt.title).replace(/'/g, "\\'") + '\', ' + evt.availableSeats + ', \'' + escHtml(evt.location).replace(/'/g, "\\'") + '\')"><i class="bi bi-ticket-perforated me-1"></i>Book Now</button>';
+                }
+
+                const seatBadge = evt.availableSeats > 10 ? 'bg-success' : evt.availableSeats > 0 ? 'bg-warning text-dark' : 'bg-danger';
+                const seatText = evt.availableSeats > 0 ? evt.availableSeats + ' seats left' : 'Sold Out';
+
+                const card = '<div class="col-md-4"><div class="card h-100 border-0 shadow-sm event-card"><div class="card-body d-flex flex-column"><div class="d-flex justify-content-between align-items-start mb-2"><span class="badge ' + seatBadge + '">' + seatText + '</span><small class="text-muted">' + date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + '</small></div><h5 class="card-title fw-bold">' + escHtml(evt.title) + '</h5><p class="card-text text-muted flex-grow-1 small">' + (escHtml(evt.description) || 'No description provided.') + '</p><div class="mt-2"><small class="text-muted"><i class="bi bi-geo-alt me-1"></i>' + escHtml(evt.location) + '</small></div>' + btnHtml + '</div></div></div>';
+
+                grid.insertAdjacentHTML('beforeend', card);
+            });
+
+        } catch (e) {
+            document.getElementById('loadingSpinner').style.display = 'none';
+            const box = document.getElementById('alertBox');
+            box.textContent = 'Failed to load events. Please make sure the API is running on ' + API;
+            box.className = 'alert alert-danger';
+        }
+    }
+
+    function openBookModal(id, title, maxSeats, location) {
+        selectedEventId = id;
+        selectedMaxSeats = maxSeats;
+        document.getElementById('bookModalTitle').textContent = title;
+        document.getElementById('bookModalDesc').textContent = 'Location: ' + location;
+        document.getElementById('seatsAvailableText').textContent = 'Available seats: ' + maxSeats;
+        document.getElementById('seatsInput').max = Math.min(maxSeats, 50);
+        document.getElementById('seatsInput').value = 1;
+        document.getElementById('bookAlert').className = 'alert d-none';
+        new bootstrap.Modal(document.getElementById('bookModal')).show();
+    }
+
+    async function confirmBooking() {
+        const seats = parseInt(document.getElementById('seatsInput').value);
+        const bookAlert = document.getElementById('bookAlert');
+        bookAlert.className = 'alert d-none';
+
+        if (!seats || seats < 1) {
+            bookAlert.textContent = 'Please enter at least 1 seat.';
+            bookAlert.className = 'alert alert-danger';
+            return;
+        }
+        if (seats > selectedMaxSeats) {
+            bookAlert.textContent = 'Only ' + selectedMaxSeats + ' seats are available.';
+            bookAlert.className = 'alert alert-danger';
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+        if (!token) { window.location.href = '/Auth/Login'; return; }
+
+        try {
+            const res = await fetch(API + '/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                body: JSON.stringify({ eventId: selectedEventId, seatsBooked: seats })
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+                bookAlert.textContent = data.message || 'Booking failed.';
+                bookAlert.className = 'alert alert-danger';
+                return;
+            }
+
+            bootstrap.Modal.getInstance(document.getElementById('bookModal')).hide();
+            const mainAlert = document.getElementById('alertBox');
+            mainAlert.textContent = 'Booking confirmed! You reserved ' + seats + ' seat(s).';
+            mainAlert.className = 'alert alert-success';
+            setTimeout(function() { mainAlert.className = 'alert d-none'; }, 4000);
+            loadEvents();
+        } catch (e) {
+            bookAlert.textContent = 'Booking request failed. Please try again.';
+            bookAlert.className = 'alert alert-danger';
+        }
+    }
+
+    loadEvents();
+</script>
+}

@@ -1,0 +1,127 @@
+﻿@model LibraryManagement.Models.BookIndexViewModel
+
+@{
+    ViewData["Title"] = "Library Management";
+}
+
+<h1>Library Management System</h1>
+<p class="text-muted">Repository Pattern + DI + Full CRUD Demo</p>
+<hr />
+
+<!-- ADD BOOK FORM -->
+<h2>Add New Book</h2>
+<form method="post" action="/Books/Create" class="row g-2 mb-4">
+    <div class="col-md-2">
+        <input type="text" name="Title" class="form-control" placeholder="Title" required />
+    </div>
+    <div class="col-md-2">
+        <input type="text" name="Author" class="form-control" placeholder="Author" required />
+    </div>
+    <div class="col-md-2">
+        <input type="text" name="ISBN" class="form-control" placeholder="ISBN" required />
+    </div>
+    <div class="col-md-1">
+        <input type="number" name="Year" class="form-control" placeholder="Year" required />
+    </div>
+    <div class="col-md-2">
+        <select name="IsAvailable" class="form-select">
+            <option value="true">Available</option>
+            <option value="false">Checked Out</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-success w-100">+ Add Book</button>
+    </div>
+</form>
+
+<hr />
+
+<!-- BOOKS TABLE WITH INLINE EDIT + DELETE -->
+<h2>All Books</h2>
+<table class="table table-bordered table-hover">
+    <thead class="table-success">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Year</th>
+            <th>Available</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model.Books)
+        {
+            var formId = $"update-form-{book.Id}";
+            <tr>
+                <form id="@formId" method="post" action="/Books/Update" style="display:none">
+                    <input type="hidden" name="Id" value="@book.Id" />
+                </form>
+
+                <td>@book.Id</td>
+                <td><input type="text" name="Title" value="@book.Title" form="@formId" class="form-control form-control-sm" /></td>
+                <td><input type="text" name="Author" value="@book.Author" form="@formId" class="form-control form-control-sm" /></td>
+                <td><input type="text" name="ISBN" value="@book.ISBN" form="@formId" class="form-control form-control-sm" /></td>
+                <td><input type="number" name="Year" value="@book.Year" form="@formId" class="form-control form-control-sm" /></td>
+                <td>
+                    <select name="IsAvailable" form="@formId" class="form-select form-select-sm">
+                        <option value="true" selected="@(book.IsAvailable ? "selected" : null)">Yes</option>
+                        <option value="false" selected="@(!book.IsAvailable ? "selected" : null)">No</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" form="@formId" class="btn btn-warning btn-sm">Update</button>
+
+                    <form method="post" action="/Books/Delete" style="display:inline">
+                        <input type="hidden" name="id" value="@book.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Delete @book.Title?')">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<!-- OPERATION LOGS TABLE -->
+<h2>CRUD Operation Logs <small class="text-muted">(timestamp + details)</small></h2>
+@if (!Model.OperationLogs.Any())
+{
+    <p class="text-warning">No logs yet. Perform a CRUD operation to see entries.</p>
+}
+else
+{
+    <table class="table table-bordered table-sm">
+        <thead class="table-secondary">
+            <tr>
+                <th>Timestamp</th>
+                <th>Operation</th>
+                <th>Details</th>
+                <th>Execution Time (ms)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in Model.OperationLogs.OrderByDescending(l => l.Timestamp))
+            {
+                var badgeClass = log.Operation switch
+                {
+                    "CREATE" => "bg-success",
+                    "UPDATE" => "bg-warning text-dark",
+                    "DELETE" => "bg-danger",
+                    _ => "bg-secondary"
+                };
+                <tr>
+                    <td>@log.Timestamp.ToString("HH:mm:ss.fff")</td>
+                    <td><span class="badge @badgeClass">@log.Operation</span></td>
+                    <td>@log.Details</td>
+                    <td>@log.ExecutionTimeMs ms</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

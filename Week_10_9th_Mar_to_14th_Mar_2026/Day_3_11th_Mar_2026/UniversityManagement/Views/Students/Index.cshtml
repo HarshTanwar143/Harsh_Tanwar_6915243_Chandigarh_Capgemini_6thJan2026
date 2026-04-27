@@ -1,0 +1,72 @@
+﻿@model IEnumerable<UniversityManagement.Models.Student>
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<h1>Students</h1>
+<a href="/Students/Create" class="btn btn-success mb-3">+ Add Student</a>
+<hr />
+
+<table class="table table-bordered table-hover">
+    <thead class="table-primary">
+        <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Enrollment Date</th>
+            <th>Enrolled Courses</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.StudentId</td>
+                <td>@student.FullName</td>
+                <td>@student.Email</td>
+                <td>@student.EnrollmentDate.ToString("MMM dd, yyyy")</td>
+                <td>
+                    @if (student.Enrollments.Any())
+                    {
+                        @foreach (var enrollment in student.Enrollments)
+                        {
+                            <div class="d-flex align-items-center gap-1 mb-1">
+                                <span class="badge bg-primary">
+                                    @enrollment.Course?.Title (@enrollment.Grade)
+                                </span>
+                                <!-- Unenroll button next to each course -->
+                                <form method="post" action="/Enrollments/Unenroll" style="display:inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="enrollmentId" value="@enrollment.EnrollmentId" />
+                                    <button type="submit"
+                                            class="btn btn-outline-danger btn-sm py-0"
+                                            style="font-size:0.7rem;"
+                                            onclick="return confirm('Remove @enrollment.Course?.Title from @student.FullName?')">
+                                        ✕
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">No courses</span>
+                    }
+                </td>
+                <td>
+                    <!-- Enroll button -->
+                    <a href="/Enrollments/Enroll/@student.StudentId"
+                       class="btn btn-success btn-sm mb-1">Enroll</a>
+                    <a href="/Students/Details/@student.StudentId"
+                       class="btn btn-info btn-sm mb-1">Details</a>
+                    <a href="/Students/Edit/@student.StudentId"
+                       class="btn btn-warning btn-sm mb-1">Edit</a>
+                    <a href="/Students/Delete/@student.StudentId"
+                       class="btn btn-danger btn-sm mb-1">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

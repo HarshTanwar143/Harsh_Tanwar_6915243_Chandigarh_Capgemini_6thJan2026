@@ -1,0 +1,128 @@
+@page
+@model EventBookingWeb.Pages.Admin.RegisteredUsersModel
+@{
+    ViewData["Title"] = "Registered Users";
+}
+
+<input type="hidden" id="apiBase" value="@Model.ApiBase" />
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0"><i class="bi bi-people-fill me-2 text-primary"></i>All Registered Users</h3>
+    <span class="badge bg-secondary fs-6" id="totalCount">Loading...</span>
+</div>
+
+<div class="mb-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search by name, email or event..." oninput="filterTable()" />
+</div>
+
+<div id="alertBox" class="alert d-none" role="alert"></div>
+<div id="loadingSpinner" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-muted mt-2">Loading registrations...</p>
+</div>
+
+<div id="tableContainer" style="display:none;">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle border-0 shadow-sm rounded">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Event</th>
+                    <th>Event Date</th>
+                    <th>Seats</th>
+                    <th>Booked On</th>
+                </tr>
+            </thead>
+            <tbody id="usersTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="noData" class="text-center py-5 d-none">
+    <i class="bi bi-inbox display-3 text-muted"></i>
+    <p class="text-muted mt-3 fs-5">No registrations found yet.</p>
+</div>
+
+@section Scripts {
+<script>
+    const API = document.getElementById('apiBase').value;
+    let allRows = [];
+
+    function escHtml(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    function requireAdmin() {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        if (!token || role !== 'Admin') {
+            window.location.href = '/Auth/Login?admin=true';
+            return false;
+        }
+        return true;
+    }
+
+    async function loadRegisteredUsers() {
+        if (!requireAdmin()) return;
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch(API + '/api/users/registered', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+
+            document.getElementById('loadingSpinner').style.display = 'none';
+
+            if (res.status === 401 || res.status === 403) { window.location.href = '/Auth/Login?admin=true'; return; }
+
+            const data = await res.json();
+            document.getElementById('totalCount').textContent = data.length + ' registration' + (data.length !== 1 ? 's' : '');
+
+            if (!data || data.length === 0) { document.getElementById('noData').classList.remove('d-none'); return; }
+
+            allRows = data;
+            renderTable(data);
+            document.getElementById('tableContainer').style.display = 'block';
+        } catch (e) {
+            document.getElementById('loadingSpinner').style.display = 'none';
+            const box = document.getElementById('alertBox');
+            box.textContent = 'Failed to load data. Make sure the API is running.';
+            box.className = 'alert alert-danger';
+        }
+    }
+
+    function renderTable(rows) {
+        const tbody = document.getElementById('usersTableBody');
+        tbody.innerHTML = '';
+        rows.forEach(function(r, i) {
+            const eventDate = new Date(r.eventDate);
+            const bookedAt = new Date(r.bookedAt);
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td class="text-muted small">' + (i + 1) + '</td>' +
+                '<td class="fw-semibold">' + escHtml(r.userName) + '</td>' +
+                '<td class="text-muted small">' + escHtml(r.userEmail) + '</td>' +
+                '<td>' + escHtml(r.eventTitle) + '</td>' +
+                '<td>' + eventDate.toLocaleDateString('en-IN') + '</td>' +
+                '<td><span class="badge bg-primary">' + r.seatsBooked + '</span></td>' +
+                '<td class="text-muted small">' + bookedAt.toLocaleDateString('en-IN') + '</td>';
+            tbody.appendChild(tr);
+        });
+    }
+
+    function filterTable() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = allRows.filter(function(r) {
+            return r.userName.toLowerCase().indexOf(q) >= 0 ||
+                   r.userEmail.toLowerCase().indexOf(q) >= 0 ||
+                   r.eventTitle.toLowerCase().indexOf(q) >= 0;
+        });
+        renderTable(filtered);
+    }
+
+    loadRegisteredUsers();
+</script>
+}

@@ -1,0 +1,189 @@
+@page
+@model EventBookingWeb.Pages.Admin.AddEventModel
+@{
+    ViewData["Title"] = "Add New Event";
+}
+
+<input type="hidden" id="apiBase" value="@Model.ApiBase" />
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <h4 class="fw-bold mb-1"><i class="bi bi-plus-circle me-2 text-primary"></i>Add New Event</h4>
+                <p class="text-muted small mb-4">Fill in the details below to create a new event.</p>
+
+                <div id="alertBox" class="alert d-none" role="alert"></div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Event Title <span class="text-danger">*</span></label>
+                    <input type="text" id="title" class="form-control" placeholder="e.g. Annual Tech Conference 2025" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Description</label>
+                    <textarea id="description" class="form-control" rows="3" placeholder="Describe the event..."></textarea>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Event Date &amp; Time <span class="text-danger">*</span></label>
+                        <input type="datetime-local" id="date" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">Available Seats <span class="text-danger">*</span></label>
+                        <input type="number" id="seats" class="form-control" min="1" max="10000" placeholder="e.g. 200" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Location <span class="text-danger">*</span></label>
+                    <input type="text" id="location" class="form-control" placeholder="e.g. Convention Hall, New Delhi" />
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button class="btn btn-primary fw-semibold px-4" onclick="submitEvent()">
+                        <i class="bi bi-cloud-upload me-2"></i>Publish Event
+                    </button>
+                    <a href="/Events/Index" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-header bg-transparent fw-semibold border-0 pt-4">
+                <i class="bi bi-list-ul me-2 text-primary"></i>Existing Events
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div id="eventsTableContainer">
+                    <div class="text-center py-3">
+                        <div class="spinner-border spinner-border-sm text-secondary"></div>
+                        <span class="ms-2 text-muted small">Loading events...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const API = document.getElementById('apiBase').value;
+
+    function requireAdmin() {
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
+        if (!token || role !== 'Admin') {
+            window.location.href = '/Auth/Login?admin=true';
+            return false;
+        }
+        return true;
+    }
+
+    function escHtml(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    async function submitEvent() {
+        if (!requireAdmin()) return;
+
+        const title = document.getElementById('title').value.trim();
+        const description = document.getElementById('description').value.trim();
+        const date = document.getElementById('date').value;
+        const location = document.getElementById('location').value.trim();
+        const seats = parseInt(document.getElementById('seats').value);
+
+        if (!title || !date || !location || !seats) {
+            showAlert('Please fill in all required fields.', 'danger');
+            return;
+        }
+
+        if (seats < 1 || seats > 10000) {
+            showAlert('Seats must be between 1 and 10,000.', 'danger');
+            return;
+        }
+
+        const eventDate = new Date(date);
+        if (eventDate <= new Date()) {
+            showAlert('Event date must be in the future.', 'danger');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(API + '/api/events', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                body: JSON.stringify({ title: title, description: description, date: eventDate.toISOString(), location: location, availableSeats: seats })
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+                showAlert(data.message || 'Failed to create event.', 'danger');
+                return;
+            }
+
+            showAlert('Event "' + data.title + '" created successfully!', 'success');
+            document.getElementById('title').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('date').value = '';
+            document.getElementById('location').value = '';
+            document.getElementById('seats').value = '';
+            loadExistingEvents();
+        } catch (e) {
+            showAlert('Server error. Make sure the API is running.', 'danger');
+        }
+    }
+
+    async function deleteEvent(id) {
+        if (!confirm('Delete this event and all its bookings?')) return;
+        const token = localStorage.getItem('token');
+        try {
+            const res = await fetch(API + '/api/events/' + id, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (res.ok || res.status === 204) {
+                showAlert('Event deleted.', 'success');
+                loadExistingEvents();
+            } else {
+                showAlert('Failed to delete event.', 'danger');
+            }
+        } catch (e) {
+            showAlert('Server error.', 'danger');
+        }
+    }
+
+    async function loadExistingEvents() {
+        const container = document.getElementById('eventsTableContainer');
+        try {
+            const res = await fetch(API + '/api/events');
+            const events = await res.json();
+
+            if (!events || events.length === 0) {
+                container.innerHTML = '<p class="text-muted small">No events found.</p>';
+                return;
+            }
+
+            let rows = '';
+            events.forEach(function(e) {
+                const d = new Date(e.date);
+                rows += '<tr><td class="fw-semibold">' + escHtml(e.title) + '</td><td>' + escHtml(e.location) + '</td><td>' + d.toLocaleDateString('en-IN') + '</td><td><span class="badge bg-primary">' + e.availableSeats + '</span></td><td><button class="btn btn-outline-danger btn-sm" onclick="deleteEvent(' + e.id + ')"><i class="bi bi-trash"></i></button></td></tr>';
+            });
+
+            container.innerHTML = '<div class="table-responsive"><table class="table table-hover align-middle small mb-0"><thead class="table-light"><tr><th>Title</th><th>Location</th><th>Date</th><th>Seats</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+        } catch (e) {
+            container.innerHTML = '<p class="text-danger small">Failed to load events.</p>';
+        }
+    }
+
+    function showAlert(msg, type) {
+        const box = document.getElementById('alertBox');
+        box.textContent = msg;
+        box.className = 'alert alert-' + type;
+        if (type === 'success') setTimeout(function() { box.className = 'alert d-none'; }, 4000);
+    }
+
+    if (requireAdmin()) { loadExistingEvents(); }
+</script>
+}

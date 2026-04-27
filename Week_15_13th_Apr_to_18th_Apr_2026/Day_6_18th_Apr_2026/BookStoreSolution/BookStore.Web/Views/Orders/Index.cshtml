@@ -1,0 +1,9 @@
+@model List<OrderView>
+@{ ViewData["Title"] = "My Orders"; }
+<h2>My Orders</h2>
+@if (Model.Any())
+{
+    <table class="table"><thead><tr><th>Order #</th><th>Date</th><th>Total</th><th>Status</th></tr></thead>
+    <tbody>@foreach (var order in Model) { <tr><td>@order.OrderId</td><td>@order.OrderDate.ToString("dd MMM yyyy")</td><td>Rs. @order.TotalAmount</td><td><span class="badge bg-info">@order.Status</span></td></tr> }</tbody></table>
+}
+else { <p>No orders yet. <a asp-controller="Books" asp-action="Index">Start shopping</a></p> }

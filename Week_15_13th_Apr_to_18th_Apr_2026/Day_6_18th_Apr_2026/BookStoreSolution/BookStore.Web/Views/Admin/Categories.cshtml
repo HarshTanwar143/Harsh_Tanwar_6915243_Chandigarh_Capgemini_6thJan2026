@@ -1,0 +1,6 @@
+@model List<CategoryView>
+@{ ViewData["Title"] = "Manage Categories"; }
+<h2>Categories</h2>
+<form asp-action="CreateCategory" method="post" class="mb-4"><div class="input-group" style="max-width:400px"><input type="text" name="name" class="form-control" placeholder="New category name" required /><button type="submit" class="btn btn-primary">Add</button></div></form>
+<table class="table" style="max-width:400px"><thead><tr><th>ID</th><th>Name</th></tr></thead>
+<tbody>@foreach (var c in Model) { <tr><td>@c.CategoryId</td><td>@c.Name</td></tr> }</tbody></table>

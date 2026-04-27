@@ -1,0 +1,7 @@
+@model BookListItem
+@{ ViewData["Title"] = Model.Title; }
+<div class="row mt-3"><div class="col-md-8">
+    <h2>@Model.Title</h2>
+    <table class="table"><tr><th>Author</th><td>@Model.AuthorName</td></tr><tr><th>Category</th><td>@Model.CategoryName</td></tr><tr><th>Publisher</th><td>@Model.PublisherName</td></tr><tr><th>ISBN</th><td>@Model.ISBN</td></tr><tr><th>Price</th><td>Rs. @Model.Price</td></tr><tr><th>In Stock</th><td>@Model.Stock</td></tr></table>
+    <form asp-action="AddToCart" method="post"><input type="hidden" name="bookId" value="@Model.BookId" /><input type="hidden" name="title" value="@Model.Title" /><input type="hidden" name="price" value="@Model.Price" /><button type="submit" class="btn btn-success">Add to Cart</button></form>
+</div></div>

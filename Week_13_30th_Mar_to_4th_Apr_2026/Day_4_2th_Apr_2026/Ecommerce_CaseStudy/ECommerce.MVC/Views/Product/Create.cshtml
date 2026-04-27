@@ -1,0 +1,29 @@
+@model Product
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: linear-gradient(135deg, #43cea2, #185a9d); }
+        .card { background: white; padding: 40px 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 350px; }
+        h2 { text-align: center; color: #333; margin-bottom: 25px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        button { width: 100%; padding: 12px; background: linear-gradient(135deg, #28a745, #218838); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; }
+        .back { text-align: center; margin-top: 18px; }
+        .back a { color: #185a9d; text-decoration: none; font-weight: 500; }
+        .error { color: #e63946; text-align: center; margin-top: 12px; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🛍️ Add Product</h2>
+        <form method="post">
+            <input name="Name" placeholder="Product name" required />
+            <button type="submit">Create</button>
+        </form>
+        @if (ViewBag.Error != null) { <p class="error">@ViewBag.Error</p> }
+        <div class="back"><a href="/Product/Index">← Back to Products</a></div>
+    </div>
+</body>
+</html>

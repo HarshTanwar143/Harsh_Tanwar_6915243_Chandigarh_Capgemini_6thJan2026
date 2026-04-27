@@ -1,0 +1,199 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="privacy-card">
+                <div class="card-header">
+                    <h1 class="mb-0">
+                        <i class="bi bi-shield-check"></i>
+                        @ViewData["Title"]
+                    </h1>
+                </div>
+                <div class="card-body">
+                    <div class="privacy-content">
+                        <div class="privacy-section">
+                            <h3><i class="bi bi-info-circle"></i> About This Application</h3>
+                            <p>This application is a comprehensive healthcare management system designed to facilitate patient, doctor, and admin workflows in a secure and efficient manner.</p>
+                        </div>
+
+                        <div class="privacy-section">
+                            <h3><i class="bi bi-lock"></i> Data Privacy</h3>
+                            <p>We are committed to protecting your personal health information and ensuring compliance with healthcare privacy standards.</p>
+                        </div>
+
+                        <div class="privacy-section">
+                            <h3><i class="bi bi-file-earmark-text"></i> Privacy Policy Details</h3>
+                            <p>Use this page to detail your site's comprehensive privacy policy, including data collection practices, user rights, and contact information.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .container {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .privacy-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border: none;
+        overflow: hidden;
+        animation: slideInScale 0.6s ease-out;
+    }
+
+    @@keyframes slideInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        animation: shimmer 3s infinite;
+    }
+
+    @@keyframes shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .card-header h1 {
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-header i {
+        font-size: 2rem;
+        margin-right: 0.5rem;
+        opacity: 0.9;
+    }
+
+    .card-body {
+        padding: 3rem;
+    }
+
+    .privacy-content {
+        max-width: 100%;
+    }
+
+    .privacy-section {
+        margin-bottom: 2.5rem;
+        padding: 2rem;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.8) 100%);
+        border-radius: 15px;
+        border-left: 5px solid #667eea;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    .privacy-section:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .privacy-section:nth-child(1) { animation-delay: 0.1s; }
+    .privacy-section:nth-child(2) { animation-delay: 0.2s; }
+    .privacy-section:nth-child(3) { animation-delay: 0.3s; }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .privacy-section h3 {
+        color: #2d3748;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .privacy-section i {
+        color: #667eea;
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .privacy-section p {
+        color: #4a5568;
+        line-height: 1.7;
+        margin: 0;
+        font-size: 1.1rem;
+    }
+
+    @@media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+
+        .card-body {
+            padding: 2rem 1.5rem;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+        }
+
+        .card-header h1 {
+            font-size: 2rem;
+        }
+
+        .privacy-section {
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .privacy-section h3 {
+            font-size: 1.3rem;
+        }
+    }
+</style>

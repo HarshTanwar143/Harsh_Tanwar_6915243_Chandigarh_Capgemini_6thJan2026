@@ -1,0 +1,561 @@
+================================================================
+     M1 QUESTIONS — EXACT INPUT CASES (Based on Actual Code)
+         Language: C# (.NET 10) | All inputs via Console.ReadLine()
+================================================================
+
+----------------------------------------------------------------
+1. AUTHENTICATION STATE
+----------------------------------------------------------------
+HOW INPUT IS READ:
+  Line 1       : Number of allowed locations
+  Next N lines : Location names (one per line)
+  Next line    : Number of users
+  Next M lines : id,email,password,location   (comma-separated)
+  Next line    : Number of actions
+  Next P lines : Action:UserIndex  (e.g. Register:0, Login:1, Logout:0)
+
+SAMPLE INPUT:
+  2
+  India
+  USA
+  3
+  1,alice@mail.com,pass123,India
+  2,bob@mail.com,pass456,USA
+  3,eve@mail.com,pass789,UK
+  7
+  Register:0
+  Register:1
+  Register:2
+  Login:0
+  Login:1
+  Login:0
+  Logout:0
+
+EXPECTED OUTPUT:
+  alice@mail.com registered successfully!
+  bob@mail.com registered successfully!
+  eve@mail.com registered successfully!
+  alice@mail.com logged in successfully!
+  bob@mail.com logged in successfully!
+  alice@mail.com is already logged in!
+  alice@mail.com logged out successfully!
+
+EDGE CASE INPUT (test blocked user after 3 wrong attempts):
+  1
+  India
+  1
+  1,harsh@mail.com,correct,India
+  5
+  Register:0
+  Login:0
+  Login:0
+  Login:0
+  Login:0
+  (Note: user at index 0 with wrong password — to test this,
+   create a second user entry with wrong password and same email)
+
+
+----------------------------------------------------------------
+2. BANK CHAT BOT
+----------------------------------------------------------------
+HOW INPUT IS READ:
+  Line 1       : Number of messages N
+  Next N lines : Natural language message strings
+
+SAMPLE INPUT:
+  5
+  Please deposit 500 into my account
+  I want to put 300 here
+  Withdraw 200 from account
+  I need to pull 50
+  invest 1000 in my account
+
+EXPECTED OUTPUT:
+  500
+  800
+  600
+  550
+  1550
+
+EDGE CASE INPUT (no number in message — amount defaults to 0):
+  3
+  deposit money please
+  withdraw some cash
+  transfer funds
+
+EXPECTED OUTPUT:
+  0
+  0
+  0
+
+
+----------------------------------------------------------------
+3. CAR INHERITANCE
+----------------------------------------------------------------
+HOW INPUT IS READ:
+  Line 1 : "fuel efficiency" for PetrolCar  (space-separated)
+  Line 2 : "fuel efficiency" for DieselCar  (space-separated)
+  Line 3 : "fuel efficiency" for ElectricCar (space-separated)
+
+  Range = fuel * efficiency
+
+SAMPLE INPUT:
+  40 15
+  50 18
+  100 6
+
+EXPECTED OUTPUT:
+  Petrol Car Range: 600
+  Diesel Car Range: 900
+  Electric Car Range: 600
+
+ANOTHER SAMPLE:
+  60 12
+  80 14
+  200 5
+
+EXPECTED OUTPUT:
+  Petrol Car Range: 720
+  Diesel Car Range: 1120
+  Electric Car Range: 1000
+
+EDGE CASE (zero fuel):
+  0 15
+  0 18
+  0 6
+
+EXPECTED OUTPUT:
+  Petrol Car Range: 0
+  Diesel Car Range: 0
+  Electric Car Range: 0
+
+
+----------------------------------------------------------------
+4. CARS MANAGEMENT
+----------------------------------------------------------------
+HOW INPUT IS READ:
+  Line 1       : Number of cars N
+  Next N lines : "Brand Model Price"  (space-separated)
+
+SAMPLE INPUT:
+  5
+  Toyota Corolla 800000
+  BMW X5 5000000
+  Toyota Camry 1200000
+  Honda Civic 700000
+  BMW M3 6000000
+
+EXPECTED OUTPUT:
+  The most expensive car is BMW M3
+  The cheapest car is Honda Civic
+  Average price of cars is 2740000.00
+  Most expensive model for each brand:
+  Toyota -> Camry 1200000
+  BMW -> M3 6000000
+  Honda -> Civic 700000
+
+ANOTHER SAMPLE:
+  3
+  Ford Mustang 3000000
+  Ford Focus 900000
+  Tesla ModelS 8000000
+
+EXPECTED OUTPUT:
+  The most expensive car is Tesla ModelS
+  The cheapest car is Ford Focus
+  Average price of cars is 3966666.67
+  Most expensive model for each brand:
+  Ford -> Mustang 3000000
+  Tesla -> ModelS 8000000
+
+EDGE CASE (single car):
+  1
+  Maruti Swift 500000
+
+EXPECTED OUTPUT:
+  The most expensive car is Maruti Swift
+  The cheapest car is Maruti Swift
+  Average price of cars is 500000.00
+  Most expensive model for each brand:
+  Maruti -> Swift 500000
+
+
+----------------------------------------------------------------
+5. COMPUTER INHERITANCE
+----------------------------------------------------------------
+HOW INPUT IS READ:
+  Line 1 : "Type Model GPU"  (space-separated, single line)
+
+  (No further input — program auto-runs TurnOn twice)
+
+SAMPLE INPUT:
+  Desktop DellXPS 8
+
+EXPECTED OUTPUT:
+  Computer info: Type - Desktop, Model - DellXPS, GPU - 8
+  Computer is off
+  Switching
+  Computer is on
+  Switching
+  Computer is off
+
+ANOTHER SAMPLE:
+  Laptop HPPavilion 4
+
+EXPECTED OUTPUT:
+  Computer info: Type - Laptop, Model - HPPavilion, GPU - 4
+  Computer is off
+  Switching
+  Computer is on
+  Switching
+  Computer is off
+
+
+----------------------------------------------------------------
+6. E-COMMERCE CATEGORY ANALYTICS
+----------------------------------------------------------------
+HOW INPUT IS READ:
+  Prompt: "Enter number of products:"
+  Line   : Number of products N
+  Next N : "id name price"  (space-separated)
+
+  Prompt: "Enter number of categories:"
+  Line   : Number of categories M
+  Next M : "id name"  (space-separated)
+
+  Prompt: "Enter category-product mappings:"
+  Line   : Number of mappings P
+  Next P : "categoryId productId"  (space-separated)
+           (A product can be mapped to MULTIPLE categories)
+
+SAMPLE INPUT:
+  Enter number of products:
+  5
+  1 Phone 25000
+  2 Shirt 500
+  3 Laptop 60000
+  4 Jeans 1200
+  5 Headphones 3000
+
+  Enter number of categories:
+  3
+  1 Electronics
+  2 Clothing
+  3 Accessories
+
+  Enter category-product mappings:
+  6
+  1 1
+  1 3
+  1 5
+  2 2
+  2 4
+  3 5
+
+EXPECTED OUTPUT:
+  Top category: Electronics
+  Common products:
+  Headphones
+  Most valuable category: Electronics 88000
+  Category price totals:
+  Electronics 88000
+  Clothing 1700
+  Accessories 3000
+
+NOTE: Product 5 (Headphones) belongs to both Electronics and
+      Accessories, so it appears in "Common products".
+
+
+----------------------------------------------------------------
+7. EMPLOYEE INHERITANCE
+----------------------------------------------------------------
+HOW INPUT IS READ:
+  Line 1 : "Name Location"  (space-separated) → FinanceEmployee
+  Line 2 : "Name Location"  (space-separated) → MarketingEmployee
+
+  (No further input — program auto-runs SwitchStatus twice each)
+
+SAMPLE INPUT:
+  Harsh Chandigarh
+  Anjali Delhi
+
+EXPECTED OUTPUT:
+  FinanceEmployee info: Department - Finance, Name - Harsh, Location - Chandigarh
+  Harsh is not on vacation
+  Switching
+  Harsh is on vacation
+  Switching
+  Harsh is not on vacation
+  MarketingEmployee info: Department - Marketing, Name - Anjali, Location - Delhi
+  Anjali is not on vacation
+  Switching
+  Anjali is on vacation
+  Switching
+  Anjali is not on vacation
+
+ANOTHER SAMPLE:
+  Ravi Mumbai
+  Priya Bangalore
+
+
+----------------------------------------------------------------
+8. GROCERY RECEIPT
+----------------------------------------------------------------
+NOTE: This program has HARDCODED data — no Console input is needed.
+      The prices, discounts, and shopping list are fixed in code:
+
+HARDCODED DATA:
+  Prices   : Banana=10, Apple=20, Orange=8
+  Discounts: Orange gets 10% off
+  Shopping : Banana x2, Apple x3, Orange x5
+
+EXPECTED OUTPUT (just run the program):
+  Banana 10 20
+  Apple 20 60
+  Orange 8 36
+
+  Calculation:
+    Banana : 10 * 2 = 20  (no discount)
+    Apple  : 20 * 3 = 60  (no discount)
+    Orange : 8  * 5 = 40, then 10% off → 40 - 4 = 36
+
+NO INPUT REQUIRED — just press Run/Enter.
+
+
+----------------------------------------------------------------
+9. LIBRARY MANAGEMENT SYSTEM
+----------------------------------------------------------------
+NOTE: This program has HARDCODED data — no Console input is needed.
+      Books are added directly in the Main() method:
+
+HARDCODED DATA:
+  Book 1: Id=1, Title=PeterPan,        Author=JamesMatthewBarrie, Category=KidsClassics, Price=193, Qty=11
+  Book 2: Id=2, Title=TheWizardOfOz,   Author=FrankBaum,          Category=KidsClassics, Price=394, Qty=3
+
+EXPECTED OUTPUT (just run the program):
+  Book Info:
+  Book Name:PeterPan, Quantity:11, Price:193
+  Book Name:TheWizardOfOz, Quantity:3, Price:394
+
+  Category Total Price:
+  Category:KidsClassics, Total Price:3305
+
+  Category And Author With Count:
+  Category:KidsClassics, Author:JamesMatthewBarrie, Count:11
+  Category:KidsClassics, Author:FrankBaum, Count:3
+
+  Total Price: 3305
+
+  (11*193 = 2123) + (3*394 = 1182) = 3305
+
+NO INPUT REQUIRED — just press Run/Enter.
+
+
+----------------------------------------------------------------
+10. MOVIE LIBRARY
+----------------------------------------------------------------
+NOTE: This program has HARDCODED data — no Console input is needed.
+      Films are added directly in the Main() method:
+
+HARDCODED DATA:
+  Film 1: Title=Inception,     Director=Christopher Nolan, Year=2010
+  Film 2: Title=Interstellar,  Director=Christopher Nolan, Year=2014
+  Film 3: Title=Titanic,       Director=James Cameron,     Year=1997
+
+  Then: SearchFilms("Nolan"), RemoveFilm("Titanic")
+
+EXPECTED OUTPUT (just run the program):
+  All Movies:
+  Inception - Christopher Nolan (2010)
+  Interstellar - Christopher Nolan (2014)
+  Titanic - James Cameron (1997)
+
+  Search for 'Nolan':
+  Inception - Christopher Nolan
+  Interstellar - Christopher Nolan
+
+  Total Films: 3
+
+  After Removing Titanic:
+  Inception - Christopher Nolan
+  Interstellar - Christopher Nolan
+
+NO INPUT REQUIRED — just press Run/Enter.
+
+
+----------------------------------------------------------------
+11. PROJECT INVENTORY MANAGEMENT SYSTEM
+----------------------------------------------------------------
+NOTE: This program has HARDCODED data — no Console input is needed.
+      Products are added directly in the Main() method:
+
+HARDCODED DATA:
+  Product 1: Name=Computer,       Category=Technology,    Stock=2,  Price=272
+  Product 2: Name=Refrigerator,   Category=HomeAppliances,Stock=3,  Price=204
+  Product 3: Name=WashingMachine, Category=HomeAppliances,Stock=3,  Price=390
+
+  Then: GetProductsByCategory("HomeAppliances"), SearchProductsByName("Computer")
+
+EXPECTED OUTPUT (just run the program):
+  Products by Category (HomeAppliances):
+  Refrigerator - HomeAppliances
+  WashingMachine - HomeAppliances
+
+  Search Product 'Computer':
+  Computer - Technology
+
+  Total Value: $2350
+  (2*272=544) + (3*204=612) + (3*390=1170) + ... wait:
+  Actually: 2*272 + 3*204 + 3*390 = 544 + 612 + 1170 = 2326
+
+  Category Count:
+  Technology : 1
+  HomeAppliances : 2
+
+  Products Grouped by Category:
+  Technology
+  Product Name:Computer Price:272
+  HomeAppliances
+  Product Name:Refrigerator Price:204
+  Product Name:WashingMachine Price:390
+
+NO INPUT REQUIRED — just press Run/Enter.
+
+
+----------------------------------------------------------------
+12. REAL ESTATE LISTING MANAGEMENT
+----------------------------------------------------------------
+NOTE: This program has HARDCODED data — no Console input is needed.
+      Listings are added directly in the Main() method:
+
+HARDCODED DATA:
+  Listing 1: ID=1, Title=Luxury Villa,    Desc=5 BHK Sea View,    Price=9000000, Location=Goa
+  Listing 2: ID=2, Title=City Apartment,  Desc=3 BHK near Metro,  Price=4500000, Location=Delhi
+  Listing 3: ID=3, Title=Farm House,      Desc=Nature View,        Price=6000000, Location=Goa
+
+  Filters: GetListingsByLocation("Goa"), GetListingsByPriceRange(4000000, 7000000)
+
+EXPECTED OUTPUT (just run the program):
+  All Listings:
+  Luxury Villa - Goa - 9000000
+  City Apartment - Delhi - 4500000
+  Farm House - Goa - 6000000
+
+  Listings in Goa:
+  Luxury Villa - 9000000
+  Farm House - 6000000
+
+  Listings between 4M and 7M:
+  City Apartment - 4500000
+  Farm House - 6000000
+
+NO INPUT REQUIRED — just press Run/Enter.
+
+
+----------------------------------------------------------------
+13. USER INHERITANCE
+----------------------------------------------------------------
+HOW INPUT IS READ:
+  Line 1 : "Name Gender Age"  (space-separated) → Admin user
+  Line 2 : "Name Gender Age"  (space-separated) → Moderator user
+
+  Gender must be one of: Male, Female, Other  (case-sensitive)
+
+SAMPLE INPUT:
+  Harsh Male 22
+  Anjali Female 25
+
+EXPECTED OUTPUT:
+  Type of user Harsh is Admin
+  Age of user Harsh is 22
+  Gender of user Harsh is Male
+  Type of user Anjali is Moderator
+  Age of user Anjali is 25
+  Gender of user Anjali is Female
+
+ANOTHER SAMPLE:
+  Alex Other 30
+  Jordan Male 28
+
+EXPECTED OUTPUT:
+  Type of user Alex is Admin
+  Age of user Alex is 30
+  Gender of user Alex is Other
+  Type of user Jordan is Moderator
+  Age of user Jordan is 28
+  Gender of user Jordan is Male
+
+EDGE CASE (gender with capital first letter only):
+  Ravi Male 19
+  Priya Female 21
+
+
+----------------------------------------------------------------
+14. USER MANAGEMENT
+----------------------------------------------------------------
+HOW INPUT IS READ:
+  Line 1         : Number of existing DB users N
+  Next N lines   : CSV row with 18 fields:
+                   id,identityNumber,firstName,lastName,age,birthDate,
+                   email,gender,country,city,address,zipCode,phone,
+                   department,roles,joinDate,credit,status
+                   (indexes used: 0=id, 2=firstName, 3=lastName, 6=email, 17=status)
+
+  Next line      : Number of new users M
+  Next M lines   : Same 18-field CSV format
+
+  Logic:
+    - If new user's Id == 0  → Inserted (new user)
+    - If Id exists in DB and any of (firstName, lastName, email, status) changed → Updated
+
+SAMPLE INPUT:
+  3
+  1,ID001,Alice,Smith,28,1996-01-01,alice@mail.com,Female,India,Delhi,Addr1,110001,9876543210,IT,Admin,2023-01-01,500.00,Active
+  2,ID002,Bob,Jones,35,1989-05-15,bob@mail.com,Male,India,Mumbai,Addr2,400001,9876543211,HR,User,2022-06-01,200.00,Active
+  3,ID003,Eve,Brown,22,2002-03-20,eve@mail.com,Female,India,Bangalore,Addr3,560001,9876543212,Finance,User,2024-01-01,100.00,Inactive
+  3
+  1,ID001,Alice,Smith,28,1996-01-01,alice@newmail.com,Female,India,Delhi,Addr1,110001,9876543210,IT,Admin,2023-01-01,500.00,Active
+  2,ID002,Bobby,Jones,35,1989-05-15,bob@mail.com,Male,India,Mumbai,Addr2,400001,9876543211,HR,User,2022-06-01,200.00,Active
+  0,ID004,NewUser,Last,25,2000-01-01,newuser@mail.com,Male,India,Chennai,Addr4,600001,9876543213,IT,User,2025-01-01,0.00,Active
+
+EXPECTED OUTPUT:
+  Updated Users:2
+  Inserted Users:1
+
+  (User 1: email changed → Updated)
+  (User 2: firstName changed → Updated)
+  (User with Id=0 → Inserted)
+
+ANOTHER SAMPLE (no changes):
+  2
+  1,ID001,John,Doe,30,1994-01-01,john@mail.com,Male,India,Delhi,A1,110001,9999999999,IT,Admin,2020-01-01,1000.00,Active
+  2,ID002,Jane,Doe,28,1996-02-02,jane@mail.com,Female,India,Mumbai,A2,400001,8888888888,HR,User,2021-01-01,500.00,Active
+  2
+  1,ID001,John,Doe,30,1994-01-01,john@mail.com,Male,India,Delhi,A1,110001,9999999999,IT,Admin,2020-01-01,1000.00,Active
+  2,ID002,Jane,Doe,28,1996-02-02,jane@mail.com,Female,India,Mumbai,A2,400001,8888888888,HR,User,2021-01-01,500.00,Active
+
+EXPECTED OUTPUT:
+  Updated Users:0
+  Inserted Users:0
+
+
+================================================================
+                     QUICK REFERENCE SUMMARY
+================================================================
+ #  | Project                      | Input Method
+----|------------------------------|---------------------------
+ 1  | Authentication State         | Console — locations, users, actions
+ 2  | Bank Chat Bot                | Console — N messages
+ 3  | Car Inheritance              | Console — 3 lines: fuel+efficiency
+ 4  | Cars Management              | Console — N cars: brand model price
+ 5  | Computer Inheritance         | Console — 1 line: type model gpu
+ 6  | E-Commerce Category Analytics| Console — products, categories, mappings
+ 7  | Employee Inheritance         | Console — 2 lines: name+location
+ 8  | Grocery Receipt              | HARDCODED — no input needed
+ 9  | Library Management System    | HARDCODED — no input needed
+10  | Movie Library                | HARDCODED — no input needed
+11  | Product Inventory Mgmt       | HARDCODED — no input needed
+12  | Real Estate Management       | HARDCODED — no input needed
+13  | User Inheritance             | Console — 2 lines: name+gender+age
+14  | User Management              | Console — DB users + new users (CSV)
+================================================================

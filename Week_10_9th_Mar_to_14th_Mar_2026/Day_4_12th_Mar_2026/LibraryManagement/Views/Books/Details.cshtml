@@ -1,0 +1,45 @@
+﻿@model LibraryManagement.Models.Book
+
+@{
+    ViewData["Title"] = $"Book Details - {Model.Title}";
+}
+
+<h1>Book Details</h1>
+<p class="text-muted">Route: /Books/Details/@Model.Id</p>
+<hr />
+
+<div class="card" style="max-width:500px;">
+    <div class="card-header bg-success text-white">
+        <h4 class="mb-0">@Model.Title</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">Book ID</dt>
+            <dd class="col-sm-8">@Model.Id</dd>
+
+            <dt class="col-sm-4">Author</dt>
+            <dd class="col-sm-8">@Model.Author</dd>
+
+            <dt class="col-sm-4">ISBN</dt>
+            <dd class="col-sm-8">@Model.ISBN</dd>
+
+            <dt class="col-sm-4">Year</dt>
+            <dd class="col-sm-8">@Model.Year</dd>
+
+            <dt class="col-sm-4">Available</dt>
+            <dd class="col-sm-8">
+                @if (Model.IsAvailable)
+                {
+                    <span class="badge bg-success">Available</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Checked Out</span>
+                }
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="/Books/Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

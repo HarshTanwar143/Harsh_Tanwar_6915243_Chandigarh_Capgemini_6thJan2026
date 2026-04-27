@@ -1,0 +1,43 @@
+﻿@model IEnumerable<UniversityManagement.Models.Course>
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<h1>Courses</h1>
+<a href="/Courses/Create" class="btn btn-success mb-3">+ Add Course</a>
+<hr />
+
+<table class="table table-bordered table-hover">
+    <thead class="table-warning">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Credits</th>
+            <th>Instructor</th>
+            <th>Enrolled Students</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.CourseId</td>
+                <td>@course.Title</td>
+                <td>@course.Credits</td>
+                <td>@course.Instructor?.Name</td>
+                <td>
+                    <span class="badge bg-secondary">
+                        @course.Enrollments.Count student(s)
+                    </span>
+                </td>
+                <td>
+                    <a href="/Courses/Details/@course.CourseId" class="btn btn-info btn-sm">Details</a>
+                    <a href="/Courses/Edit/@course.CourseId" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="/Courses/Delete/@course.CourseId" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

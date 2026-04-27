@@ -1,0 +1,122 @@
+@model List<WeatherForecast>
+@{
+    ViewData["Title"] = "Weather Dashboard";
+
+    string TempClass(int c) => c >= 25 ? "hot" : c <= 5 ? "cold" : "mild";
+    string TempIcon(int c) => c >= 30 ? "🔥" : c >= 20 ? "☀️" : c >= 10 ? "🌤️" : c >= 0 ? "🌧️" : "❄️";
+
+    int? avgTemp = Model.Any() ? (int?)Math.Round(Model.Average(x => x.TemperatureC)) : null;
+    int? maxTemp = Model.Any() ? Model.Max(x => x.TemperatureC) : null;
+    int? minTemp = Model.Any() ? Model.Min(x => x.TemperatureC) : null;
+}
+
+<div class="container">
+
+    <!-- Header -->
+    <header class="page-header">
+        <div class="header-left">
+            <h1 class="page-title">WEATHER<br/><span>FORECAST</span></h1>
+            <p class="page-sub">ASP.NET Core MVC &rarr; WeatherApiDemo</p>
+        </div>
+        <div class="api-badge">
+            <span class="dot"></span>
+            localhost:5282/weatherforecast
+        </div>
+    </header>
+
+    <!-- Error Banner -->
+    @if (ViewBag.Error != null)
+    {
+        <div class="error-banner">
+            ⚠️ @ViewBag.Error
+            <div class="error-hint">
+                Make sure <strong>WeatherApiDemo</strong> is running in VS and CORS is enabled in its <code>Program.cs</code>.
+            </div>
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Total Days</div>
+                <div class="stat-value">@Model.Count</div>
+                <div class="stat-sub">forecast entries</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Temp</div>
+                <div class="stat-value">@avgTemp°</div>
+                <div class="stat-sub">degrees Celsius</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Hottest</div>
+                <div class="stat-value hot-text">@maxTemp°</div>
+                <div class="stat-sub">degrees Celsius</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Coldest</div>
+                <div class="stat-value cold-text">@minTemp°</div>
+                <div class="stat-sub">degrees Celsius</div>
+            </div>
+        </div>
+
+        <!-- Section Label -->
+        <div class="section-label">5-Day Forecast</div>
+
+        <!-- Forecast Cards -->
+        <div class="forecast-grid">
+            @foreach (var item in Model)
+            {
+                var cls = TempClass(item.TemperatureC);
+                var icon = TempIcon(item.TemperatureC);
+                <div class="forecast-card @cls">
+                    <div class="card-icon">@icon</div>
+                    <div class="card-date">@item.Date.ToString("ddd, MMM d")</div>
+                    <div class="card-tempc">@item.TemperatureC°</div>
+                    <div class="card-tempf">@item.TemperatureF°F</div>
+                    <span class="card-badge">@item.Summary</span>
+                </div>
+            }
+        </div>
+
+        <!-- Table View -->
+        <div class="section-label" style="margin-top:48px">Data Table</div>
+        <div class="table-wrap">
+            <table class="weather-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temp (°C)</th>
+                        <th>Temp (°F)</th>
+                        <th>Summary</th>
+                        <th>Condition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var cls = TempClass(item.TemperatureC);
+                        var icon = TempIcon(item.TemperatureC);
+                        <tr>
+                            <td>@item.Date.ToString("dddd, MMM d yyyy")</td>
+                            <td class="@cls-text">@item.TemperatureC°C</td>
+                            <td>@item.TemperatureF°F</td>
+                            <td>@item.Summary</td>
+                            <td>@icon</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else if (ViewBag.Error == null)
+    {
+        <div class="empty-state">
+            <div class="empty-icon">🌤️</div>
+            <h2>No Data Returned</h2>
+            <p>The API responded but returned no forecast data.</p>
+        </div>
+    }
+
+</div>

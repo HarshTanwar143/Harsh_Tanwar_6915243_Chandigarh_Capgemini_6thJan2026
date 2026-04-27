@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LearnHub — Online Learning Platform</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="navbar">
+  <div class="brand">Learn<span>Hub</span></div>
+  <div class="nav-links">
+    <!-- Always visible -->
+    <a href="#" data-page="page-courses">Courses</a>
+
+    <!-- Guest links -->
+    <div id="nav-guest" style="display:flex;gap:0.5rem;align-items:center">
+      <a href="#" data-page="page-auth">Login / Register</a>
+    </div>
+
+    <!-- Logged-in links -->
+    <div id="nav-logged" style="display: none; gap: 0.5rem; align-items: center;">
+      <span id="nav-role-badge"></span>
+      <span style="color:rgba(255,255,255,0.7);font-size:0.9rem" id="nav-username"></span>
+      <a href="#" id="nav-create-course" data-page="page-create-course" style="display:none">+ Create Course</a>
+      <button id="btn-logout">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== TOAST CONTAINER ===================== -->
+<div id="toast-container"></div>
+
+<!-- ===================== PAGE: AUTH ===================== -->
+<div id="page-auth" class="page">
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <h2>Welcome to LearnHub</h2>
+      <p class="subtitle">Sign in or create an account to get started</p>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-target="tab-login">Sign In</button>
+        <button class="tab-btn" data-target="tab-register">Register</button>
+      </div>
+
+      <!-- LOGIN TAB -->
+      <div id="tab-login" class="tab-panel active">
+        <form id="login-form" novalidate>
+          <div id="login-general-err" class="alert alert-danger" style="display:none"></div>
+
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
+            <div class="error" id="login-email-err"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+            <div class="error" id="login-pass-err"></div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+        </form>
+
+        <div style="margin-top:1.25rem;padding:1rem;background:#f8fafc;border-radius:8px;font-size:0.82rem;color:var(--muted)">
+          <strong>Demo Accounts (register first):</strong><br/>
+          🎓 Register with Role: <code>Student</code> — can enroll in courses<br/>
+          👩‍🏫 Register with Role: <code>Instructor</code> — can create courses &amp; add lessons<br/>
+          🔑 Register with Role: <code>Admin</code> — full access
+        </div>
+      </div>
+
+      <!-- REGISTER TAB -->
+      <div id="tab-register" class="tab-panel" style="display:none">
+        <form id="register-form" novalidate>
+          <div id="reg-general-err" class="alert alert-danger" style="display:none"></div>
+
+          <div class="form-group">
+            <label for="reg-username">Username</label>
+            <input type="text" id="reg-username" placeholder="johndoe" autocomplete="username" />
+            <div class="error" id="reg-username-err"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
+            <div class="error" id="reg-email-err"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Password <span style="color:var(--muted);font-weight:400">(min 6 chars)</span></label>
+            <input type="password" id="reg-password" placeholder="••••••••" autocomplete="new-password" />
+            <div class="error" id="reg-pass-err"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-role">Role</label>
+            <select id="reg-role">
+              <option value="">— Select your role —</option>
+              <option value="Student">Student</option>
+              <option value="Instructor">Instructor</option>
+              <option value="Admin">Admin</option>
+            </select>
+            <div class="error" id="reg-role-err"></div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE: COURSES ===================== -->
+<div id="page-courses" class="page">
+  <div class="container">
+    <div class="page-header">
+      <div>
+        <h1>📚 All Courses</h1>
+        <p>Browse and enroll in available courses</p>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="course-search" placeholder="Search courses…" />
+      </div>
+      <select id="category-filter" style="padding:0.65rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.9rem;background:white">
+        <option value="">All Categories</option>
+        <option value="Programming">Programming</option>
+        <option value="Design">Design</option>
+        <option value="Business">Business</option>
+        <option value="Data Science">Data Science</option>
+        <option value="Marketing">Marketing</option>
+        <option value="Other">Other</option>
+      </select>
+      <button class="btn btn-outline" onclick="loadCourses()">🔄 Refresh</button>
+    </div>
+
+    <div id="courses-grid" class="courses-grid">
+      <div class="spinner"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE: COURSE DETAIL ===================== -->
+<div id="page-course-detail" class="page">
+  <div class="container">
+    <button id="btn-back-courses" class="btn btn-outline" style="margin-bottom:1.5rem">← Back to Courses</button>
+    <div id="course-detail-content"></div>
+  </div>
+</div>
+
+<!-- ===================== PAGE: CREATE COURSE ===================== -->
+<div id="page-create-course" class="page">
+  <div class="container">
+    <div class="page-header">
+      <div>
+        <h1>➕ Create New Course</h1>
+        <p>Fill in the details below. Only Instructors &amp; Admins can create courses.</p>
+      </div>
+    </div>
+
+    <div class="create-course-card">
+      <form id="create-course-form" novalidate>
+        <div id="cc-general-err" class="alert alert-danger" style="display:none"></div>
+
+        <div class="form-group">
+          <label for="cc-title">Course Title <span style="color:var(--danger)">*</span></label>
+          <input type="text" id="cc-title" placeholder="e.g. Introduction to Python" />
+          <div class="error" id="cc-title-err"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="cc-category">Category</label>
+          <select id="cc-category">
+            <option value="">— Select category —</option>
+            <option value="Programming">Programming</option>
+            <option value="Design">Design</option>
+            <option value="Business">Business</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cc-description">Description</label>
+          <textarea id="cc-description" rows="4" placeholder="What will students learn?"></textarea>
+        </div>
+
+        <div style="display:flex;gap:0.75rem">
+          <button type="submit" class="btn btn-primary">Create Course</button>
+          <button type="button" class="btn btn-outline" onclick="showPage('page-courses');loadCourses()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: ENROLL ===================== -->
+<div id="modal-enroll" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Enroll in Course</h3>
+      <button class="modal-close" onclick="closeModal('modal-enroll')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:1rem;color:var(--muted)">
+        Enrolling in: <strong id="enroll-course-title"></strong>
+      </p>
+      <input type="hidden" id="enroll-course-id-hidden" />
+      <div class="form-group">
+        <label for="enroll-userid-input">Your User ID</label>
+        <input type="number" id="enroll-userid-input" placeholder="Enter your numeric User ID" />
+        <div class="error" id="enroll-userid-err"></div>
+        <p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem">
+          💡 Tip: You can find your User ID by checking the database or asking your Admin. This is a one-time entry.
+        </p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-enroll')">Cancel</button>
+      <button id="enroll-confirm-btn" class="btn btn-success">Confirm Enroll</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: ADD LESSON ===================== -->
+<div id="modal-add-lesson" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add Lesson</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-lesson')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:1rem;color:var(--muted)">
+        Adding lesson to: <strong id="lesson-course-title"></strong>
+      </p>
+      <input type="hidden" id="lesson-course-id-hidden" />
+
+      <div class="form-group">
+        <label for="lesson-title-input">Lesson Title <span style="color:var(--danger)">*</span></label>
+        <input type="text" id="lesson-title-input" placeholder="e.g. Variables and Data Types" />
+        <div class="error" id="lesson-title-err"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="lesson-content-input">Content / Description</label>
+        <textarea id="lesson-content-input" rows="3" placeholder="Brief description of the lesson…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-lesson')">Cancel</button>
+      <button id="lesson-submit-btn" class="btn btn-primary">Add Lesson</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+
+<!-- Fix for error divs — show/hide based on content -->
+<script>
+  // Override showError to also show/hide alert divs
+  const _origShowError = showError;
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    if (el.classList.contains('alert')) {
+      el.style.display = msg ? 'flex' : 'none';
+    }
+  }
+
+  // Override clearErrors to hide alert divs too
+  const _origClearErrors = clearErrors;
+  function clearErrors(prefix) {
+    document.querySelectorAll(`[id^="${prefix}-"][id$="-err"]`).forEach(e => {
+      e.textContent = '';
+      if (e.classList.contains('alert')) e.style.display = 'none';
+    });
+  }
+
+  // Tab panel visibility
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    if (!p.classList.contains('active')) p.style.display = 'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+      document.getElementById(btn.dataset.target).style.display = 'block';
+    });
+  });
+</script>
+
+</body>
+</html>

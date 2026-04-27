@@ -1,0 +1,341 @@
+@model IEnumerable<SmartHealthcare.Models.DTOs.AppointmentDTO>
+@{
+    ViewData["Title"] = "My Appointments";
+    var role = ViewBag.Role as string;
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h1 class="mb-3"><i class="bi bi-calendar-check"></i> Appointments</h1>
+        </div>
+        <div class="col-md-6 text-end">
+            @if (role == "Patient")
+            {
+                <a asp-action="Create" class="btn btn-success btn-lg"><i class="bi bi-plus-circle"></i> Book New Appointment</a>
+            }
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row g-4 mb-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm appointment-card">
+                        <div class="card-header bg-@GetStatusColor(item.Status) text-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0"><i class="bi bi-calendar-event"></i> Appointment #@item.Id</h6>
+                                <span class="badge bg-light text-dark">@item.Status</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="appointment-info">
+                                <p class="mb-3">
+                                    <strong><i class="bi bi-person"></i> Patient:</strong><br />
+                                    <span class="ms-3">@item.PatientName</span>
+                                </p>
+                                <p class="mb-3">
+                                    <strong><i class="bi bi-hospital"></i> Doctor:</strong><br />
+                                    <span class="ms-3">Dr. @item.DoctorName</span>
+                                </p>
+                                <p class="mb-3">
+                                    <strong><i class="bi bi-clock"></i> Date & Time:</strong><br />
+                                    <span class="ms-3">@item.AppointmentDate.ToString("dd-MMM-yyyy HH:mm")</span>
+                                </p>
+                                @if (!string.IsNullOrEmpty(item.Notes))
+                                {
+                                    <p class="mb-3">
+                                        <strong><i class="bi bi-sticky"></i> Notes:</strong><br />
+                                        <span class="ms-3 text-muted">@item.Notes</span>
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                        <div class="card-footer bg-light">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary w-100">
+                                <i class="bi bi-info-circle"></i> View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center py-5" role="alert">
+            <h4 class="alert-heading"><i class="bi bi-info-circle"></i> No Appointments</h4>
+            <p>You haven't booked any appointments yet.</p>
+            @if (role == "Patient")
+            {
+                <a asp-action="Create" class="btn btn-info"><i class="bi bi-plus-circle"></i> Book Your First Appointment</a>
+            }
+        </div>
+    }
+</div>
+
+@functions {
+    private string GetStatusColor(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "pending" => "warning",
+            "completed" => "success",
+            "cancelled" => "danger",
+            _ => "secondary"
+        };
+    }
+}
+
+<style>
+    .card {
+        border: none;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(15px);
+        background: rgba(255, 255, 255, 0.95);
+        transition: all 0.4s ease;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--status-color), var(--status-color-dark));
+    }
+
+    .appointment-card {
+        animation: slideInLeft 0.6s ease-out;
+    }
+
+    .appointment-card:nth-child(1) { animation-delay: 0.1s; }
+    .appointment-card:nth-child(2) { animation-delay: 0.2s; }
+    .appointment-card:nth-child(3) { animation-delay: 0.3s; }
+    .appointment-card:nth-child(4) { animation-delay: 0.4s; }
+    .appointment-card:nth-child(5) { animation-delay: 0.5s; }
+    .appointment-card:nth-child(6) { animation-delay: 0.6s; }
+
+    @@keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--status-bg), var(--status-bg-dark));
+        color: white;
+        border: none;
+        padding: 1.5rem;
+        position: relative;
+    }
+
+    .card-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .card-header h6 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .badge {
+        background: rgba(255, 255, 255, 0.2) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 2rem;
+        padding: 0.25rem 0.75rem;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .appointment-info {
+        background: linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.8));
+        padding: 1.5rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1rem;
+    }
+
+    .appointment-info p {
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .appointment-info strong {
+        color: #4a5568;
+        font-weight: 600;
+    }
+
+    .text-muted {
+        color: #718096 !important;
+    }
+
+    .card-footer {
+        background: linear-gradient(135deg, rgba(248, 250, 252, 0.9), rgba(241, 245, 249, 0.9));
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
+
+    .btn-outline-primary {
+        border: 2px solid #0d6efd;
+        color: #0d6efd;
+        border-radius: 2rem;
+        padding: 0.5rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-outline-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-outline-primary:hover::before {
+        left: 100%;
+    }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #0d6efd, #6610f2);
+        border-color: #0d6efd;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+    }
+
+    .alert {
+        border-radius: 1.5rem;
+        border: none;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(15px);
+    }
+
+    .alert-info {
+        background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+        color: #0c5460;
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, #0dcaf0, #0aa2c0);
+        border: none;
+        border-radius: 2rem;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(13, 202, 240, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .btn-info:hover {
+        background: linear-gradient(135deg, #0aa2c0, #0987a0);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(13, 202, 240, 0.4);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #198754, #155724);
+        border: none;
+        border-radius: 2rem;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #155724, #0f5132);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(25, 135, 84, 0.4);
+    }
+
+    /* Status-specific colors */
+    .bg-warning {
+        --status-color: #ffc107;
+        --status-color-dark: #e0a800;
+        --status-bg: #ffc107;
+        --status-bg-dark: #e0a800;
+    }
+
+    .bg-success {
+        --status-color: #198754;
+        --status-color-dark: #155724;
+        --status-bg: #198754;
+        --status-bg-dark: #155724;
+    }
+
+    .bg-danger {
+        --status-color: #dc3545;
+        --status-color-dark: #c82333;
+        --status-bg: #dc3545;
+        --status-bg-dark: #c82333;
+    }
+
+    .bg-secondary {
+        --status-color: #6c757d;
+        --status-color-dark: #545b62;
+        --status-bg: #6c757d;
+        --status-bg-dark: #545b62;
+    }
+
+    /* Icon enhancements */
+    .bi {
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+        transition: all 0.3s ease;
+    }
+
+    .bi:hover {
+        transform: scale(1.1);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .appointment-info {
+            padding: 1rem;
+        }
+
+        .card-header, .card-footer {
+            padding: 1rem;
+        }
+    }
+</style>

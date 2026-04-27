@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Enroll Student";
+    var student = ViewBag.Student as UniversityManagement.Models.Student;
+    var courses = ViewBag.AvailableCourses as List<UniversityManagement.Models.Course>;
+}
+
+<h1>Enroll Student in a Course</h1>
+<hr />
+
+<div class="alert alert-info">
+    Enrolling: <strong>@student?.FullName</strong>
+</div>
+
+@if (courses == null || !courses.Any())
+{
+    <div class="alert alert-warning">
+        This student is already enrolled in all available courses.
+    </div>
+    <a href="/Students/Index" class="btn btn-secondary">Back to Students</a>
+}
+else
+{
+    <div class="card" style="max-width:500px;">
+        <div class="card-body">
+            <form method="post" action="/Enrollments/Enroll">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="StudentId" value="@student?.StudentId" />
+
+                <div class="mb-3">
+                    <label class="form-label">Select Course</label>
+                    <select name="CourseId" class="form-select" required>
+                        <option value="">-- Select a Course --</option>
+                        @foreach (var course in courses)
+                        {
+                            <option value="@course.CourseId">
+                                @course.Title (@course.Credits credits) — @course.Instructor?.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Grade</label>
+                    <select name="Grade" class="form-select" required>
+                        <option value="">-- Select Grade --</option>
+                        <option value="A">A</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="B-">B-</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">Enroll</button>
+                <a href="/Students/Index" class="btn btn-secondary ms-2">Cancel</a>
+            </form>
+        </div>
+    </div>
+}

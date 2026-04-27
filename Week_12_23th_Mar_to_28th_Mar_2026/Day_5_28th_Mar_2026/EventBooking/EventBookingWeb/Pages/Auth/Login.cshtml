@@ -1,0 +1,127 @@
+@page
+@model EventBookingWeb.Pages.Auth.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    bool isAdmin = Request.Query["admin"] == "true";
+}
+
+<input type="hidden" id="apiBase" value="@Model.ApiBase" />
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div class="card shadow border-0">
+            <div class="card-body p-4">
+                @if (isAdmin)
+                {
+                    <div class="text-center mb-3">
+                        <i class="bi bi-shield-lock display-4 text-warning"></i>
+                        <h4 class="fw-bold mt-2">Admin Login</h4>
+                        <p class="text-muted small">Access restricted to administrators only.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center mb-3">
+                        <i class="bi bi-person-circle display-4 text-primary"></i>
+                        <h4 class="fw-bold mt-2">Welcome Back</h4>
+                        <p class="text-muted small">Log in to manage your bookings.</p>
+                    </div>
+                }
+
+                <div id="alertBox" class="alert alert-danger d-none" role="alert"></div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="you@example.com"
+                           value="@(isAdmin ? "admin@gmail.com" : "")" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Password</label>
+                    <div class="input-group">
+                        <input type="password" id="password" class="form-control" placeholder="Enter password"
+                               value="@(isAdmin ? "admin123" : "")" />
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePass()">
+                            <i class="bi bi-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-grid mt-4">
+                    <button class="btn @(isAdmin ? "btn-warning" : "btn-primary") fw-semibold" onclick="doLogin()">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                    </button>
+                </div>
+                @if (!isAdmin)
+                {
+                    <hr />
+                    <p class="text-center text-muted small mb-0">
+                        Don't have an account? <a href="/Auth/Register">Register here</a>
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const API = document.getElementById('apiBase').value;
+
+    function togglePass() {
+        const p = document.getElementById('password');
+        const icon = document.getElementById('eyeIcon');
+        if (p.type === 'password') {
+            p.type = 'text';
+            icon.className = 'bi bi-eye-slash';
+        } else {
+            p.type = 'password';
+            icon.className = 'bi bi-eye';
+        }
+    }
+
+    async function doLogin() {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const alertBox = document.getElementById('alertBox');
+        alertBox.classList.add('d-none');
+
+        if (!email || !password) {
+            alertBox.textContent = 'Please enter both email and password.';
+            alertBox.classList.remove('d-none');
+            return;
+        }
+
+        try {
+            const res = await fetch(API + '/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, password: password })
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+                alertBox.textContent = data.message || 'Login failed.';
+                alertBox.classList.remove('d-none');
+                return;
+            }
+
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('role', data.role);
+            localStorage.setItem('fullName', data.fullName);
+            localStorage.setItem('userId', data.userId);
+
+            if (data.role === 'Admin') {
+                window.location.href = '/Admin/AddEvent';
+            } else {
+                window.location.href = '/Events/Index';
+            }
+        } catch (e) {
+            alertBox.textContent = 'Unable to connect to the server. Make sure the API is running.';
+            alertBox.classList.remove('d-none');
+        }
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') doLogin();
+    });
+</script>
+}

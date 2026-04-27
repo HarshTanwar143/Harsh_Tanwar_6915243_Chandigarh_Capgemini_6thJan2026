@@ -1,0 +1,23 @@
+﻿@model EmployeeProjectApp.Models.Project
+@{
+    ViewData["Title"] = "Project Details";
+}
+
+<h2>@Model.Title</h2>
+<p><strong>Description:</strong> @Model.Description</p>
+
+<h4 class="mt-4">Assigned Employees:</h4>
+<table class="table table-sm table-bordered">
+    <thead><tr><th>Employee</th><th>Department</th><th>Assigned Date</th></tr></thead>
+    <tbody>
+        @foreach (var ep in Model.EmployeeProjects)
+        {
+            <tr>
+                <td>@ep.Employee.Name</td>
+                <td>@ep.Employee.Department?.Name</td>
+                <td>@ep.AssignedDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Index" class="btn btn-secondary">Back</a>

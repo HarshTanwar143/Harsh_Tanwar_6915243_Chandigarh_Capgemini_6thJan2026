@@ -1,0 +1,220 @@
+@model IEnumerable<SmartHealthcare.Models.DTOs.UserDTO>
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-3"><i class="bi bi-people-fill"></i> User Management</h1>
+            <p class="text-muted">Manage all system users including patients, doctors, and admins</p>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th><i class="bi bi-hash"></i> ID</th>
+                        <th><i class="bi bi-person"></i> Full Name</th>
+                        <th><i class="bi bi-envelope"></i> Email</th>
+                        <th><i class="bi bi-briefcase"></i> Role</th>
+                        <th><i class="bi bi-calendar-event"></i> Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@user.Id</td>
+                            <td>@user.FullName</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <span class="badge bg-@GetRoleBg(user.Role)">@user.Role</span>
+                            </td>
+                            <td>@user.CreatedAt.ToString("dd-MMM-yyyy HH:mm")</td>
+                            <td>
+                                <form asp-action="DeleteUser" method="post" class="d-inline" onsubmit="return confirm('Are you sure?');">
+                                    <input type="hidden" name="id" value="@user.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center py-5">
+            <h4><i class="bi bi-info-circle"></i> No Users Found</h4>
+            <p class="mb-0">There are no users in the system yet.</p>
+        </div>
+    }
+</div>
+
+@functions {
+    private string GetRoleBg(string role)
+    {
+        return role?.ToLower() switch
+        {
+            "admin" => "danger",
+            "doctor" => "success",
+            "patient" => "info",
+            _ => "secondary"
+        };
+    }
+}
+
+<style>
+    .table-responsive {
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+
+    .table {
+        margin-bottom: 0;
+        border: none;
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, #0d6efd, #6610f2);
+        color: white;
+        border: none;
+        padding: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .table-hover tbody tr:hover {
+        background: linear-gradient(135deg, rgba(13, 110, 253, 0.05), rgba(102, 16, 242, 0.05));
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .table td {
+        padding: 1rem;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .fw-bold {
+        font-weight: 700;
+        color: #2d3748;
+    }
+
+    .badge {
+        padding: 0.5rem 0.75rem;
+        font-weight: 600;
+        border-radius: 2rem;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .badge.bg-danger {
+        background: linear-gradient(135deg, #dc3545, #c82333) !important;
+    }
+
+    .badge.bg-success {
+        background: linear-gradient(135deg, #198754, #155724) !important;
+    }
+
+    .badge.bg-info {
+        background: linear-gradient(135deg, #0dcaf0, #0aa2c0) !important;
+    }
+
+    .badge.bg-secondary {
+        background: linear-gradient(135deg, #6c757d, #545b62) !important;
+    }
+
+    .btn-outline-danger {
+        border: 2px solid #dc3545;
+        color: #dc3545;
+        border-radius: 2rem;
+        padding: 0.375rem 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-danger:hover {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        border-color: #dc3545;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .alert {
+        border-radius: 1rem;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .alert-info {
+        background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+        color: #0c5460;
+    }
+
+    /* Animation for table rows */
+    @@keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .table tbody tr {
+        animation: slideInLeft 0.5s ease-out;
+    }
+
+    .table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+    .table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+    .table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+    .table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+    .table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+
+    /* Icon enhancements */
+    .bi {
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .table-responsive {
+            border-radius: 0.5rem;
+        }
+
+        .table thead th,
+        .table td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+    }
+</style>

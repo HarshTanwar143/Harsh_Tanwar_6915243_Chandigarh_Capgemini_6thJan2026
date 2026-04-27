@@ -1,0 +1,39 @@
+﻿@model UniversityManagement.Models.Course
+
+@{
+    ViewData["Title"] = "Edit Course";
+}
+
+<h1>Edit Course</h1>
+<hr />
+
+<div class="card" style="max-width:500px;">
+    <div class="card-body">
+        <form method="post" action="/Courses/Edit/@Model.CourseId">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="CourseId" value="@Model.CourseId" />
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" name="Title" value="@Model.Title" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Credits</label>
+                <input type="number" name="Credits" value="@Model.Credits" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Instructor</label>
+                <select name="InstructorId" class="form-select" required>
+                    @foreach (var instructor in ViewBag.Instructors)
+                    {
+                        <option value="@instructor.InstructorId"
+                                selected="@(instructor.InstructorId == Model.InstructorId ? "selected" : null)">
+                            @instructor.Name
+                        </option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-warning">Update Course</button>
+            <a href="/Courses/Index" class="btn btn-secondary ms-2">Cancel</a>
+        </form>
+    </div>
+</div>

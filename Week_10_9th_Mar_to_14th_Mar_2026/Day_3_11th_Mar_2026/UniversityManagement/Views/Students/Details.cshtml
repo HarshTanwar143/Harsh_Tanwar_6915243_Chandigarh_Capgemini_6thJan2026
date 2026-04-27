@@ -1,0 +1,58 @@
+﻿@model UniversityManagement.Models.Student
+
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<h1>Student Details</h1>
+<hr />
+
+<div class="card" style="max-width:600px;">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">@Model.FullName</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">Student ID</dt>
+            <dd class="col-sm-8">@Model.StudentId</dd>
+
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8">@Model.Email</dd>
+
+            <dt class="col-sm-4">Enrollment Date</dt>
+            <dd class="col-sm-8">@Model.EnrollmentDate.ToString("MMM dd, yyyy")</dd>
+        </dl>
+
+        <h5 class="mt-3">Enrolled Courses</h5>
+        @if (Model.Enrollments.Any())
+        {
+            <table class="table table-sm table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Course</th>
+                        <th>Credits</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var enrollment in Model.Enrollments)
+                    {
+                        <tr>
+                            <td>@enrollment.Course?.Title</td>
+                            <td>@enrollment.Course?.Credits</td>
+                            <td><span class="badge bg-success">@enrollment.Grade</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted">Not enrolled in any course.</p>
+        }
+    </div>
+    <div class="card-footer">
+        <a href="/Students/Index" class="btn btn-secondary">Back to List</a>
+        <a href="/Students/Edit/@Model.StudentId" class="btn btn-warning ms-2">Edit</a>
+    </div>
+</div>

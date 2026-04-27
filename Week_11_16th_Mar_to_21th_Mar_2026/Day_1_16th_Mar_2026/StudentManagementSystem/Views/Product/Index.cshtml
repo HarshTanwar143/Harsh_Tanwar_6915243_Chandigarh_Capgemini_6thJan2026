@@ -1,0 +1,168 @@
+﻿@model List<StudentManagementSystem.Models.Product>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI',sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 30px;
+        }
+
+        .card-header h2 {
+            color: #2d3748;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .card-header p {
+            color: #718096;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        thead tr {
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: white;
+        }
+
+        thead th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+            thead th:first-child {
+                border-radius: 10px 0 0 10px;
+            }
+
+            thead th:last-child {
+                border-radius: 0 10px 10px 0;
+            }
+
+        tbody tr {
+            border-bottom: 1px solid #e2e8f0;
+            transition: background 0.2s;
+        }
+
+            tbody tr:hover {
+                background: #f7fafc;
+            }
+
+        tbody td {
+            padding: 14px 16px;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .badge-id {
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .price {
+            color: #276749;
+            font-weight: 700;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 20px 0;
+        }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            padding: 13px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+            .btn-back:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+            }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <div class="icon">📦</div>
+            <h2>Product Management</h2>
+            <p>@Model.Count products available</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr><th>#</th><th>Product Name</th><th>Price (₹)</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td><span class="badge-id">@product.Id</span></td>
+                        <td>@product.Name</td>
+                        <td class="price">₹@product.Price.ToString("N0")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="divider"></div>
+        <a href="/Account/Dashboard" class="btn-back">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+﻿@model EmployeeProjectApp.Models.Project
+@{
+    ViewData["Title"] = "Edit Project";
+}
+
+<h2>Edit Project</h2>
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Assign Employees</label>
+        @foreach (var emp in ViewBag.Employees)
+        {
+            var isChecked = ((List<int>)ViewBag.SelectedEmployees).Contains(emp.Id);
+            <div class="form-check">
+                <input type="checkbox" name="selectedEmployees" value="@emp.Id"
+                       class="form-check-input" id="emp_@emp.Id"
+                       @(isChecked ? "checked" : "") />
+                <label class="form-check-label" for="emp_@emp.Id">@emp.Name (@emp.Department?.Name)</label>
+            </div>
+        }
+    </div>
+    <button type="submit" class="btn btn-warning">Update</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

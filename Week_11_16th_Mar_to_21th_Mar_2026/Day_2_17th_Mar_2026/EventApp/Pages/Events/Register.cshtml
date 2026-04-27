@@ -1,0 +1,82 @@
+﻿@page
+@model EventApp.Pages.Events.RegisterModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register for Event</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+        body { min-height:100vh; background:linear-gradient(135deg,#43cea2 0%,#185a9d 100%); display:flex; align-items:center; justify-content:center; padding:40px 20px; }
+        .card { background:white; border-radius:20px; padding:40px; width:480px; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+        .card-header { text-align:center; margin-bottom:30px; }
+        .icon { width:70px; height:70px; background:linear-gradient(135deg,#43cea2,#185a9d); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 15px; font-size:30px; }
+        .card-header h2 { color:#2d3748; font-size:26px; font-weight:700; }
+        .card-header p { color:#718096; font-size:14px; margin-top:5px; }
+        .form-group { margin-bottom:18px; }
+        .form-group label { display:block; color:#4a5568; font-weight:600; font-size:14px; margin-bottom:8px; }
+        .input-wrapper { position:relative; }
+        .input-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:18px; color:#a0aec0; }
+        .form-group input, .form-group select { width:100%; padding:12px 14px 12px 42px; border:2px solid #e2e8f0; border-radius:10px; font-size:15px; outline:none; transition:all 0.3s; color:#2d3748; background:white; }
+        .form-group input:focus, .form-group select:focus { border-color:#43cea2; box-shadow:0 0 0 3px rgba(67,206,162,0.15); }
+        .field-error { color:#e53e3e; font-size:12px; margin-top:6px; }
+        .btn-submit { width:100%; padding:14px; background:linear-gradient(135deg,#43cea2,#185a9d); color:white; border:none; border-radius:10px; font-size:16px; font-weight:600; cursor:pointer; transition:all 0.3s; margin-top:10px; }
+        .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(67,206,162,0.5); }
+        .btn-back { display:block; text-align:center; margin-top:15px; color:#185a9d; font-size:14px; text-decoration:none; }
+        .divider { height:1px; background:#e2e8f0; margin:20px 0; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <div class="icon">📝</div>
+            <h2>Event Registration</h2>
+            <p>Fill in your details to register</p>
+        </div>
+
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Registration.ParticipantName">Full Name <span style="color:red">*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input asp-for="Registration.ParticipantName" placeholder="Enter your full name" />
+                </div>
+                <div class="field-error"><span asp-validation-for="Registration.ParticipantName"></span></div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Registration.Email">Email <span style="color:red">*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon">📧</span>
+                    <input asp-for="Registration.Email" type="email" placeholder="Enter your email" />
+                </div>
+                <div class="field-error"><span asp-validation-for="Registration.Email"></span></div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Registration.EventName">Event Name <span style="color:red">*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🎯</span>
+                    <select asp-for="Registration.EventName">
+                        <option value="">-- Select Event --</option>
+                        <option value="Tech Summit 2026">Tech Summit 2026</option>
+                        <option value="AI Workshop">AI Workshop</option>
+                        <option value="Web Dev Bootcamp">Web Dev Bootcamp</option>
+                        <option value="Cloud Conference">Cloud Conference</option>
+                        <option value="Hackathon 2026">Hackathon 2026</option>
+                    </select>
+                </div>
+                <div class="field-error"><span asp-validation-for="Registration.EventName"></span></div>
+            </div>
+
+            <div class="divider"></div>
+            <button type="submit" class="btn-submit">✅ Register Now</button>
+            <a href="/Events/Index" class="btn-back">← View All Participants</a>
+        </form>
+    </div>
+
+    @section Scripts {
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
+</body>
+</html>

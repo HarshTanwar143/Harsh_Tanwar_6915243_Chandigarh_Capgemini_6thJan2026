@@ -1,0 +1,33 @@
+﻿@model UniversityManagement.Models.Course
+
+@{
+    ViewData["Title"] = "Delete Course";
+}
+
+<h1>Delete Course</h1>
+<hr />
+
+<div class="alert alert-danger">
+    Are you sure you want to delete course <strong>@Model.Title</strong>?
+</div>
+
+<div class="card" style="max-width:400px;">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">Title</dt>
+            <dd class="col-sm-8">@Model.Title</dd>
+
+            <dt class="col-sm-4">Credits</dt>
+            <dd class="col-sm-8">@Model.Credits</dd>
+
+            <dt class="col-sm-4">Instructor</dt>
+            <dd class="col-sm-8">@Model.Instructor?.Name</dd>
+        </dl>
+
+        <form method="post" action="/Courses/Delete/@Model.CourseId">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="/Courses/Index" class="btn btn-secondary ms-2">Cancel</a>
+        </form>
+    </div>
+</div>
